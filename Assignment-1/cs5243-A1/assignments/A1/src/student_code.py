@@ -9,7 +9,24 @@ import numpy as np
 
 def image_summary(image: np.ndarray) -> dict[str, object]:
     """Return shape, height, width, channels, dtype, range, mean, and nbytes."""
-    raise NotImplementedError
+    arr = np.asarray(image)
+    if arr.ndim == 2:                       # grayscale: no channel axis
+        height, width = arr.shape
+        channels = 1
+    elif arr.ndim == 3:                     # color: (H, W, C) with C == 3 or 4
+        height, width, channels = arr.shape
+    else:
+        raise ValueError(f"Malformed image array. Expected a 2-D or 3-D image array, got shape {arr.shape!r}")
+    return {
+        "shape": tuple(int(n) for n in arr.shape),
+        "height": int(height),
+        "width": int(width),
+        "channels": int(channels),
+        "dtype": str(arr.dtype),
+        "range": (arr.min().item(), arr.max().item()),
+        "mean": float(arr.mean()),
+        "nbytes": int(arr.nbytes),
+    }
 
 
 def crop_image(image: np.ndarray, top: int, left: int, height: int, width: int) -> np.ndarray:
