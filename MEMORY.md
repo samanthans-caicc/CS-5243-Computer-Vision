@@ -1,10 +1,45 @@
 # CS 5243 Assignment 1 — Work Log / Cross-Device Handoff
 
-_Last updated: 2026-08-28. This file is a scratch/handoff note, not part of the graded submission._
+_Last updated: 2026-08-30. This file is a scratch/handoff note, not part of the graded submission._
 
 ---
 
-## STATUS AT A GLANCE
+## ⚠️ MAJOR CHANGE (2026-08-30) — canonical layout is now `A1/`, old bundle deprecated
+
+The repo was restructured to the **canonical course layout**: a top-level, git-tracked
+**`A1/`** folder sits as a sibling of **`common-setup/`** (exactly what
+`common-setup/README.md` describes). **This `A1/` is the operative assignment now.**
+
+- The old **`Assignment-1/cs5243-A1/` bundle is deprecated** and will be **deleted by the
+  user personally** (do not delete it yourself). Everything below that references
+  `Assignment-1/...` paths, cell ids, or the status table is about the OLD bundle and is
+  now **stale**.
+- `A1/` is a **fresh starter**: `A1/src/student_code.py` has all **15 functions as
+  `NotImplementedError` stubs again** (including `image_summary` — the old impl did NOT
+  carry over). `A1/src/a1_tools.py` is a **new version** (differs from the old one).
+- **Paths that changed:** notebook `A1/A1.ipynb` (new cell ids — old ids in this file are
+  invalid) · dataset now `A1/data/images` + `A1/data/video` (was `assets/A1/`) · config
+  `A1/config/A1.yml` · tests `A1/tests_public/` · validate/package now run from
+  **`common-setup/scripts/`** targeting sibling `A1/`.
+- **`cs5243` is now editable-installed from `common-setup/`** (the newer, canonical copy),
+  not the old bundle. `import cs5243` → `common-setup/cs5243`.
+- The **code drafts further down (image_summary, Task 2 functions) are still useful
+  reference** — the 15 signatures are unchanged — but re-verify against the new
+  `a1_tools.py` and paste into the NEW notebook's cells (find current ids in `A1/A1.ipynb`).
+- Identity in the new notebook is still the **`REPLACE ME` placeholder** — the student must
+  re-enter name + ABC123 (was Samantha Salas / xso947 in the old bundle).
+
+**Setup status on this WSL device (verified 2026-08-30):** env ready and pointed at the
+canonical layout. `verify_environment()` clean · public tests `A1/tests_public` = 3 pass /
+3 placeholder-skip · `common-setup/scripts/validate_submission.py --assignment A1
+--preflight` = `valid: true`, 0 errors.
+
+---
+
+## STATUS AT A GLANCE (⚠️ OLD BUNDLE — reset to zero under new `A1/`)
+
+_The table below reflects the deprecated `Assignment-1/` bundle. Under the fresh `A1/`
+starter, **all 15 functions are unimplemented stubs** and no outputs/analysis exist yet._
 
 | Part | Points | State |
 |---|---|---|
@@ -19,20 +54,21 @@ _Last updated: 2026-08-28. This file is a scratch/handoff note, not part of the 
 | Task 6 — extension | 10 | Not started |
 | Synthesis / reflection / submission | 9 | Not started |
 
-`student_code.py`: only `image_summary` is implemented. The other 14 functions are still `raise NotImplementedError` stubs.
-
 ---
 
 ## ENVIRONMENT SETUP ON A NEW DEVICE (do this first)
 
-> **This WSL device (verified 2026-08-30):** env is already built and ready.
-> conda/mamba live at `~/miniforge3` (there was no conda originally — Miniforge
-> was installed fresh). The env interpreter is `~/miniforge3/envs/cs5243/bin/python`
-> (Python 3.11.16). `cs5243` is editable-installed pointing at this repo path.
-> `verify_environment()` returns no problems; public tests pass (3 pass, 3 skip =
-> unimplemented placeholders). To use it without activating: prefix commands with
-> `~/miniforge3/envs/cs5243/bin/python`. Steps 1–2 below are only needed on a
-> *different* fresh device.
+> **This WSL device (verified 2026-08-30):** env is already built and ready for the
+> canonical `A1/` layout. conda/mamba live at `~/miniforge3` (there was no conda
+> originally — Miniforge was installed fresh). The env interpreter is
+> `~/miniforge3/envs/cs5243/bin/python` (Python 3.11.16). **`cs5243` is editable-installed
+> from `common-setup/`** (`pip install -e common-setup`) → `import cs5243` resolves to
+> `common-setup/cs5243`. `verify_environment()` returns no problems; public tests
+> (`A1/tests_public`) pass (3 pass, 3 skip = unimplemented placeholders). To use it
+> without activating: prefix commands with `~/miniforge3/envs/cs5243/bin/python`.
+> Launch the notebook: `~/miniforge3/envs/cs5243/bin/jupyter lab A1/A1.ipynb`.
+> Steps 1–2 below are only needed on a *different* fresh device (there, install editable
+> from `common-setup`, not the old bundle).
 
 0. **If `conda`/`mamba` is not installed at all** (as was the case here), install
    Miniforge first (matches the `conda-forge` channel in `environment.yml`):
