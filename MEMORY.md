@@ -25,11 +25,31 @@ _Last updated: 2026-08-28. This file is a scratch/handoff note, not part of the 
 
 ## ENVIRONMENT SETUP ON A NEW DEVICE (do this first)
 
+> **This WSL device (verified 2026-08-30):** env is already built and ready.
+> conda/mamba live at `~/miniforge3` (there was no conda originally — Miniforge
+> was installed fresh). The env interpreter is `~/miniforge3/envs/cs5243/bin/python`
+> (Python 3.11.16). `cs5243` is editable-installed pointing at this repo path.
+> `verify_environment()` returns no problems; public tests pass (3 pass, 3 skip =
+> unimplemented placeholders). To use it without activating: prefix commands with
+> `~/miniforge3/envs/cs5243/bin/python`. Steps 1–2 below are only needed on a
+> *different* fresh device.
+
+0. **If `conda`/`mamba` is not installed at all** (as was the case here), install
+   Miniforge first (matches the `conda-forge` channel in `environment.yml`):
+   ```bash
+   curl -fsSL -o /tmp/miniforge.sh \
+     "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-$(uname -m).sh"
+   bash /tmp/miniforge.sh -b -p ~/miniforge3
+   ```
+
 1. **Create the conda env** (Python 3.11) from the course spec:
    ```bash
-   conda env create -f Assignment-1/cs5243-A1/environment.yml   # or: mamba env create -f ...
+   ~/miniforge3/bin/mamba env create -f Assignment-1/cs5243-A1/environment.yml
    ```
-   The env is named `cs5243`.
+   The env is named `cs5243`. Note: `environment.py` requires Python **exactly
+   3.11** AND importable numpy/scipy/pandas/matplotlib/PIL/cv2/skimage/sklearn/
+   imageio/tqdm/torch/torchvision/yaml — so the full env (incl. pytorch) is
+   required for the notebook's Section 2 to pass; a bare venv won't do.
 
 2. **Editable-install the course package FROM THE CURRENT REPO PATH:**
    ```bash
@@ -64,6 +84,18 @@ _Last updated: 2026-08-28. This file is a scratch/handoff note, not part of the 
 - `Assignment-1/` was **embedded directly** into this repo (commit `a540c80`). Its old
   nested `.git` and the separate `github.com/samanthans-caicc/Assignment-1` repo are no
   longer used from here.
+- **Two `cs5243` packages exist — do not mix them.** The repo has both a top-level
+  `common-setup/` (the newer *canonical* course infra the `common-setup/README.md`
+  describes) AND the older, self-contained `Assignment-1/cs5243-A1/` bundle. They diverge
+  in `cs5243/data.py`, `cs5243/validation.py`, and the two `scripts/`. The **Assignment-1
+  bundle is the operative world for A1** — it holds the notebook, `config/A1.yml`, matching
+  tests, and working validate/package scripts. `import cs5243` is (correctly) editable-
+  installed from the Assignment-1 copy; its preflight validator runs clean
+  (`valid: true`, 0 errors). The canonical `common-setup/` sibling-layout the README assumes
+  was **never assembled** here (no top-level `A1/`, and `common-setup/config/` has no
+  `A1.yml`), so `common-setup/`'s own scripts can't validate A1 — treat `common-setup/` as
+  reference only. `environment.yml` is byte-identical in both, so the one `cs5243` conda env
+  serves either. Always run validate/package from `Assignment-1/cs5243-A1/scripts/`.
 - All assignment work happens under **`Assignment-1/cs5243-A1/assignments/A1/`**:
   - `A1.ipynb` — the notebook
   - `src/student_code.py` — the 15 graded functions (the only file you implement)
