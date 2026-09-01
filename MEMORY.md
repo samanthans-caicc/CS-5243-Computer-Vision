@@ -1,6 +1,143 @@
 # CS 5243 Assignment 1 — Work Log / Cross-Device Handoff
 
-_Last updated: 2026-08-31. This file is a scratch/handoff note, not part of the graded submission._
+_Last updated: 2026-09-01. This file is a scratch/handoff note, not part of the graded submission._
+
+---
+
+## ✅ PROGRESS (2026-09-01, later session) — ALL CODE DONE; only prose + submission left
+
+**Every remaining code cell is implemented and the whole notebook runs clean.** Headless
+`nbconvert --execute --allow-errors` over `A1/A1.ipynb`: **0 errored cells** (previously the
+run stopped at Task 4's `NotImplementedError`). Public tests: **6 passed, 0 skipped**.
+
+- **All 15 functions in `A1/src/student_code.py` are implemented.** New this session:
+  `to_float01`, `to_uint8_safe`, `grayscale_mean`, `grayscale_luminance`, `hsv_rule`,
+  `transform_frame`, plus a shared `_check_rgb` guard. `to_float01` divides by the *dtype*
+  maximum (not the observed max); `to_uint8_safe` clips **before** scaling and rounds in
+  float64 so `k/255 -> k` round-trips exactly; `hsv_rule` handles the wrapped-hue case
+  (`lower[0] > upper[0]` -> `hue >= low | hue <= high`).
+- **Task 4** (cell `39aeb486`): round trip (max error 0), uint8 `+80` wraps **58.6%** of
+  samples darker, `(float*255).astype(uint8)` after a ×1.4 gain disagrees with
+  `to_uint8_safe` on **62.9%** of samples (max gap 255), and the uint16 ramp cast straight to
+  uint8 sawtooths **173 times** across its middle row. Figure + 7 metric rows.
+  This cell also defines **`record_metrics(experiment, rows)`**, which rewrites only its own
+  experiment's rows in `experiment_metrics.csv` — so re-running any cell never duplicates.
+- **Experiment 1** (`be37e794`): five representations of `color_shapes.png`, all float32 with
+  display limits pinned to [0, 1] (the sixth panel is a stretched difference *diagnostic*,
+  labeled as such). OpenCV grayscale is called with BGR input; the wrong-convention call is
+  kept as a measured control.
+- **Experiment 2** (`c5372f53`): one rule — hue 170→10 wrapped, S ≥ 100, V ≥ 60 — on the three
+  aligned images. **normal**: 11.02% selected, coverage 92.2%, precision 100%. **dim**: 0%
+  everything — the target's saturation falls to 85, under the rule's 100 (the value clause
+  still passes at 92.2%, so the failure is attributable to saturation alone). **warm**:
+  coverage 100% but precision 86.6% — the warm cast pulls other shapes' outlines into the
+  hue window.
+- **Experiment 3** (`e6418d31`): 48 frames transformed and written with `a1_tools.write_mp4`;
+  read-back valid (resolution/fps/frame_count all True). Frame 0 after H.264 re-encode differs
+  by mean 0.86 / max 46 levels — structure round-trips, exact samples do not.
+- **Task 5** (`4aac6891`): (A) a region written `(x, y, w, h)` fed into `(row, col)` indexing —
+  the yellow bar `(243, 318, 190, 45)` silently returns the bottom of the green circle
+  (mean RGB 156,200,180 vs the correct 245,210,35); the same swap on the blue triangle raises
+  `ValueError`, which is the point: the bug is loud or silent purely by geometry.
+  (B) `t * frame_count` vs `t * fps` — indices 48/96/144 clamp to frame 47 for every timestamp.
+- **Task 6** (`f390eecc`): question = does JPEG compression break the Experiment 2 rule?
+  Six quality levels vs the lossless PNG. Coverage stays 0.939–0.954 and mask agreement
+  ≥ 0.996 all the way down to q10, against **0.000 for the dim capture** — storage is a far
+  weaker threat to the rule than lighting. Side finding: on this flat synthetic image the PNG
+  (4.2 KiB) is *smaller* than every JPEG (24.1 KiB at q95, 7.2 KiB at q10).
+  One file in `outputs/extension/`: `jpeg_quality_vs_hsv_rule.png`.
+
+**Bug fixed in already-"done" work:** `timing.csv` was written with columns
+`implementation` / `outputs_identical`, but `A1/config/A1.yml` requires `method`,
+`median_ms`, `repeats`, `outputs_equal`. The validator's `artifact-schema` check would have
+**errored** on it. Cell `d58039dc` now writes the schema names (extra columns are allowed).
+
+**Validator state now** (`python common-setup/scripts/validate_submission.py --assignment A1`):
+2 error *kinds* left, both expected — `not-executed A1.ipynb` and `stale-html A1.html`. Every
+artifact-schema check passes (`timing.csv`, `image_metadata.csv`, `experiment_metrics.csv`,
+`video_metadata.json`). Both clear once the notebook is genuinely Restart-and-Run-All'd and
+the HTML is re-exported.
+
+**Housekeeping done:** the 8 tracked `.pyc` files are now `git rm --cached`'d (index only —
+files left on disk, nothing committed).
+
+### 📓 STUDY AIDS — one code walkthrough per task/experiment (2026-09-01)
+
+Nine plain-markdown walkthroughs now sit at the repo root, all in the same house style
+(key background → function-by-function code walk → notebook cell logic → measured result →
+"two concepts examiners love to probe"):
+
+| file | covers |
+|---|---|
+| `A1_Task1_code_walkthrough.md` | `image_summary`, cell `0456cb0b`, the metadata table |
+| `A1_Task2_code_walkthrough.md` | the six spatial/channel ops, views vs copies |
+| `A1_Task3_code_walkthrough.md` | `brighten_loop`/`brighten_vectorized`, timing harness |
+| `A1_Task4_code_walkthrough.md` | `to_float01`, `to_uint8_safe`, `record_metrics`, cell `39aeb486` |
+| `A1_Experiment1_code_walkthrough.md` | `_check_rgb`, both grayscale rules, cell `be37e794` |
+| `A1_Experiment2_code_walkthrough.md` | `hsv_rule` incl. hue wrap, cell `c5372f53` |
+| `A1_Experiment3_code_walkthrough.md` | `transform_frame`, video probe/write/verify, cell `e6418d31` |
+| `A1_Task5_code_walkthrough.md` | both failures, evidence→mechanism→correction→verification |
+| `A1_Task6_code_walkthrough.md` | the JPEG-vs-HSV-rule extension, cell `f390eecc` |
+
+Each one ends with a short "what the analysis prompt is asking for" note — a structure hint
+with the numbers to cite, **not** drafted prose. All nine must be deleted before packaging.
+
+Two facts dug up while writing them, both verified and worth citing in the analysis:
+- The 7.85% of the Experiment 2 target ROI the rule rejects under the *normal* capture is
+  the rectangle's black outline stroke (2,401 pixels, all at value exactly 30) — not error.
+- The coverage *rise* under JPEG compression is that same stroke: at q10, all 862 newly
+  selected ROI pixels were outline pixels in the lossless PNG, lifted over the thresholds
+  by the codec bleeding red across the black edge.
+
+### ⏭️ WHAT IS ACTUALLY LEFT
+1. **Write the analysis prose** (student's own words — deliberately not drafted): `a0e6beb4`
+   (Task 2), `a0c07d3a` (Task 3), `6d7db7ff` (Task 4), `3349cb7a` (Exp 1), `baee3dde` (Exp 2),
+   `64773af5` (Exp 3), `098cf7e6` (Task 5), `06afeab5` (Task 6 question + conclusion,
+   80–130 words), `92d7684e` (synthesis ≤180 words), `a6e760e3` (reflection 100–150 words).
+   All the numbers to cite are in the run outputs above and in `outputs/tables/`.
+2. **Restart Kernel and Run All Cells**, save, export `A1.html`.
+3. `validate_submission.py --assignment A1` → `package_submission.py --assignment A1`.
+4. **Before packaging:** delete/gitignore all nine `A1_*_code_walkthrough.md` files at
+   the repo root (study aids, not submission files):
+   `rm A1_*_code_walkthrough.md` — Task1, Task2, Task3, Task4, Experiment1,
+   Experiment2, Experiment3, Task5, Task6.
+
+---
+
+## ✅ PROGRESS (2026-09-01) — Task 3 done; Tasks 1–3 verified by a real headless run
+
+- **Task 3 — DONE (6 pts).** Implemented `brighten_loop` + `brighten_vectorized` in
+  `A1/src/student_code.py`, sharing a new `_check_uint8` guard. Both do
+  **add → `np.rint` → clip `[0,255]` → `uint8`**, and both compute in **`float64`** so the
+  two paths round identically on `.5` ties (this is why `outputs_identical` is a guarantee,
+  not luck). Notebook cell `d58039dc` now holds the timing harness → writes
+  `outputs/tables/timing.csv`.
+- **Measured:** median **211 ms (loop) vs 2.89 ms (vectorized) ≈ 73×** on `wide_scene.jpg`
+  (648,000 elements), offset +40, 5 repeats, outputs identical. Numbers shift per run; the
+  CSV is the record.
+- **Tasks 1 and 2 are now actually verified** — they had never been run under the new `A1/`.
+  Headless `jupyter nbconvert --execute --allow-errors` run: setup, Task 1, Task 2, Task 3
+  all execute clean; **first error is Task 4's `NotImplementedError`**, as expected.
+  `image_overview.png`, `numpy_manipulations.png`, `image_metadata.csv`, `timing.csv` all
+  landed in `A1/outputs/`.
+- **Public tests now 5 pass / 1 skip** (was 3 pass / 3 skip).
+  `test_brightness_implementations_agree` passes. The one skip is
+  `test_safe_round_trip` (Task 4 stubs).
+- **Task 3 verification beyond the public test:** loop == vectorized across the entire
+  uint8 domain for offsets −300.5 … +300; 3-D and non-contiguous inputs; inputs not
+  mutated; `uint16`/`float32` rejected; nearest-even confirmed
+  (`[0,1,2,3,4] + 0.5 → [0,2,2,4,4]`).
+- **New study-aid file:** `A1_Task3_code_walkthrough.md` at repo root (same style as the
+  Task 2 one). **Also delete/gitignore before packaging.**
+
+**Still TODO (student's own words, deliberately not drafted):** analysis prose for
+Task 2 (cell `a0e6beb4`) and Task 3 (cell `a0c07d3a`). Both cells currently hold the
+placeholder plus a `# TODO: WRITE ANALYSIS` line.
+
+**Housekeeping found:** `__pycache__/` is in `.gitignore`, but **8 `.pyc` files are already
+tracked** (the rule doesn't apply retroactively), so
+`A1/src/__pycache__/student_code.cpython-311.pyc` shows up in every diff. Fix with
+`git rm -r --cached` on those paths when convenient.
 
 ---
 
@@ -69,23 +206,27 @@ canonical layout. `verify_environment()` clean · public tests `A1/tests_public`
 
 ---
 
-## STATUS AT A GLANCE (⚠️ OLD BUNDLE — reset to zero under new `A1/`)
+## STATUS AT A GLANCE (current, for the canonical `A1/` — 75 points total)
 
-_The table below reflects the deprecated `Assignment-1/` bundle. Under the fresh `A1/`
-starter, **all 15 functions are unimplemented stubs** and no outputs/analysis exist yet._
+⚠️ **Point values corrected 2026-09-01** by reading the headings in `A1/A1.ipynb`. The old
+table here used the deprecated `Assignment-1/` bundle's weights, which were wrong.
+Notebook's own point map: core implementation 30 · required experiments 19 ·
+results/analysis/failure reasoning 15 · reproducibility/submission 7 · extension 4.
 
-| Part | Points | State |
-|---|---|---|
-| Task 1 — image arrays | 8 | **DONE & committed** (impl + CSV + figure). Analysis prose drafted, minor fixes pending. |
-| Task 2 — NumPy spatial/channel ops | 14 | **APPLIED to new `A1/` (2026-08-31)** — 6 funcs + helper in `student_code.py`, cell `c351ab6d` done. Analysis prose + verify run pending. |
-| Task 3 — loop vs vectorized brighten | 8 | Not started |
-| Task 4 — dtype/range safety | 10 | Not started |
-| Experiment 1 — channel order / grayscale | 10 | Not started |
-| Experiment 2 — HSV rule stability | 9 | Not started |
-| Experiment 3 — video sampling | 6 | Not started |
-| Task 5 — failure analysis | 10 | Not started |
-| Task 6 — extension | 10 | Not started |
-| Synthesis / reflection / submission | 9 | Not started |
+| Part | Pts | Code cell | Analysis cell | State |
+|---|---|---|---|---|
+| Task 1 — inspect/communicate image arrays | 6 | `0456cb0b` | `6bada4c0` → prose in `fbde8d4e` | **DONE & verified** (impl + CSV + figure run clean). One grammar fix pending. |
+| Task 2 — NumPy spatial/channel ops | 11 | `c351ab6d` | `a0e6beb4` | **Code DONE & verified.** Analysis prose pending. |
+| Task 3 — loop vs vectorized brighten | 6 | `d58039dc` | `a0c07d3a` | **Code DONE & verified** (`timing.csv` written, ≈73×). Analysis prose pending. |
+| Task 4 — dtype/range safety | 7 | `39aeb486` | `6d7db7ff` | **Code DONE & verified.** Analysis prose pending. |
+| Experiment 1 — channel order / grayscale | 8 | `be37e794` | `3349cb7a` | **Code DONE & verified.** Analysis prose pending. |
+| Experiment 2 — HSV rule stability | 7 | `c5372f53` | `baee3dde` | **Code DONE & verified.** Analysis prose pending. |
+| Experiment 3 — video sampling | 4 | `e6418d31` | `64773af5` | **Code DONE & verified.** Analysis prose pending. |
+| Task 5 — failure analysis | 7 | `4aac6891` | `098cf7e6` | **Code DONE & verified.** Analysis prose pending. |
+| Task 6 — extension | 4 | `f390eecc` | `06afeab5` | **Code DONE & verified.** Question + conclusion prose pending. |
+| Synthesis / reflection / submission | — | — | `92d7684e`, `a6e760e3` | Not started |
+
+**Implemented: 15 of 15 functions (2026-09-01, later session). No stubs remain.**
 
 ---
 
@@ -113,8 +254,9 @@ starter, **all 15 functions are unimplemented stubs** and no outputs/analysis ex
 
 1. **Create the conda env** (Python 3.11) from the course spec:
    ```bash
-   ~/miniforge3/bin/mamba env create -f Assignment-1/cs5243-A1/environment.yml
+   ~/miniforge3/bin/mamba env create -f common-setup/environment.yml
    ```
+   (Verified 2026-09-01: this is the **only** `environment.yml` left in the repo.)
    The env is named `cs5243`. Note: `environment.py` requires Python **exactly
    3.11** AND importable numpy/scipy/pandas/matplotlib/PIL/cv2/skimage/sklearn/
    imageio/tqdm/torch/torchvision/yaml — so the full env (incl. pytorch) is
@@ -122,7 +264,7 @@ starter, **all 15 functions are unimplemented stubs** and no outputs/analysis ex
 
 2. **Editable-install the course package FROM THE CURRENT REPO PATH:**
    ```bash
-   <path-to>/envs/cs5243/bin/pip install -e Assignment-1/cs5243-A1
+   <path-to>/envs/cs5243/bin/pip install -e common-setup
    ```
    ⚠️ The original clone shipped with a **stale editable install** pointing at an old
    location (`/home/sqmi/CS 5243 Computer Vision Assignments/...`, with spaces) that no
@@ -143,12 +285,27 @@ starter, **all 15 functions are unimplemented stubs** and no outputs/analysis ex
 
 ### Public tests
 ```bash
-<env>/bin/python -m pytest Assignment-1/cs5243-A1/assignments/A1/tests_public/test_a1_public.py -q
+~/miniforge3/envs/cs5243/bin/python -m pytest A1/tests_public -q
 ```
+Current baseline (2026-09-01): **5 passed, 1 skipped** — the skip is `test_safe_round_trip`,
+waiting on Task 4's `to_float01`/`to_uint8_safe`.
+
+### Two different "root" helpers — do not confuse them
+- `a1_tools.find_repository_root(...)` → returns **`common-setup/`** (it looks for
+  `environment.yml`). This is what the public tests use.
+- `cs5243.data.find_course_root(...)` → returns the **actual repo root**, which is what the
+  notebook setup cell uses to build `A1 = COURSE_ROOT / "A1"`.
 
 ---
 
-## REPO / STRUCTURE NOTES
+## REPO / STRUCTURE NOTES (⚠️ STALE — describes the deprecated `Assignment-1/` bundle)
+
+> **Do not follow the paths in this section.** It predates the 2026-08-30 restructure and
+> still claims the `Assignment-1/` bundle is operative. It is not — `A1/` is. Kept only as
+> history. Current layout: notebook `A1/A1.ipynb` · code `A1/src/student_code.py` ·
+> helpers `A1/src/a1_tools.py` (do not edit) · dataset `A1/data/{images,video}` ·
+> outputs `A1/outputs/{figures,tables,videos,extension}` · tests `A1/tests_public/` ·
+> scripts `common-setup/scripts/`.
 
 - `Assignment-1/` was **embedded directly** into this repo (commit `a540c80`). Its old
   nested `.git` and the separate `github.com/samanthans-caicc/Assignment-1` repo are no
@@ -185,7 +342,8 @@ starter, **all 15 functions are unimplemented stubs** and no outputs/analysis ex
 | portrait_scene.png | (540, 360, 3) | uint8 | 35 | 240 | 190.93 |
 | wide_scene.jpg | (300, 720, 3) | uint8 | 0 | 255 | 162.16 |
 
-Video `assets/A1/video/moving_shapes.mp4`: 320×240, 48 frames, 12.0 fps, ~4 s.
+Video `A1/data/video/moving_shapes.mp4` (was `assets/A1/video/`): 320×240, 48 frames,
+12.0 fps, ~4 s. Confirmed still true by the public test on 2026-09-01.
 
 Named-pixel readouts on `channel_order.png` (row, col → R,G,B):
 `(150,120)→(235,35,35)` red block · `(150,360)→(35,210,65)` green block ·
@@ -200,7 +358,8 @@ Named-pixel readouts on `channel_order.png` (row, col → R,G,B):
   `raise NotImplementedError` is commented out.
 - `outputs/tables/image_metadata.csv` and `outputs/figures/image_overview.png` generated
   and committed.
-- **Analysis prose**: the draft lives in a *separate* markdown cell (id `ffa50a2f`)
+- **Analysis prose**: the draft lives in a *separate* markdown cell — id **`fbde8d4e`** in
+  the current `A1/A1.ipynb` (the old `ffa50a2f` was the deprecated bundle's id) —
   immediately after the `**Task 1 analysis ...** YOUR RESPONSE` placeholder (id
   `6bada4c0`). Current text:
 
@@ -305,7 +464,7 @@ plt.show()
 
 ---
 
-## TASK 2 — CODE READY, NOT YET APPLIED (14 pts)
+## TASK 2 — CODE APPLIED & VERIFIED (11 pts)
 
 **Spec:** implement crop, horizontal flip, channel extraction, channel reorder,
 rectangular replacement, contact-sheet construction. Pure NumPy — **no OpenCV** functions
@@ -459,10 +618,151 @@ print("wrote", out)
 plt.show()
 ```
 
-**After applying:** run setup cell → Task 1 cell → Task 2 cell. Then write the Task 2
-analysis (cell `a0e6beb4`): flip/crop/replace change *where* pixels sit (spatial);
-`extract_channel`/`bgr_to_rgb` only reindex the last axis so colors change but positions
-do not.
+**Analysis still to write** (cell `a0e6beb4`, student's own words): flip/crop/replace change
+*where* pixels sit (spatial); `extract_channel`/`bgr_to_rgb` only reindex the last axis so
+colors change but positions do not.
+
+Study aid: `A1_Task2_code_walkthrough.md` (repo root, delete before packaging).
+
+---
+
+## TASK 3 — DONE & VERIFIED (6 pts) · cell `d58039dc` · analysis `a0c07d3a`
+
+**Spec (from the notebook):** implement `brighten_loop` and `brighten_vectorized` using
+`np.rint` nearest-even rounding **before** clipping to `[0, 255]` and converting to `uint8`.
+Time each ≥3× on the same image with `time.perf_counter`; report median ms, repeat count,
+and output equality in `outputs/tables/timing.csv`. "Timing supports a representation
+argument; it is not a benchmarking contest."
+
+**Key design decisions (defend these if asked):**
+- Order is **add → `np.rint` → clip → cast**. The cast must come last because
+  `.astype(np.uint8)` *truncates* (30.7 → 30), it does not round. (Round-vs-clip order
+  happens to commute here since 0 and 255 are integers, but follow the spec's order.)
+- **Both paths compute in `float64`.** The loop uses Python `float` (= C double); the
+  vectorized version uses `.astype(np.float64)`. Matching precision is what makes
+  "outputs identical" a guarantee rather than a coincidence — `float32` could round `.5`
+  ties differently.
+- `brighten_loop` flattens with `arr.reshape(-1)` so **one** loop covers 2-D grayscale and
+  3-D RGB alike; writes into a separate `np.empty` output (non-mutating), reshapes at the end.
+- Shared `_check_uint8` guard rejects non-`uint8` input — on the `uint16` ramp the
+  `[0,255]` clip would silently crush everything to 255.
+- Median (not mean) over the repeats: one sample can catch a GC pause; `max_ms` in the CSV
+  shows this. CSV records min/median/max so the noise is visible.
+
+**Verified:** loop == vectorized across the whole uint8 domain for offsets −300.5 … +300;
+3-D + non-contiguous inputs; non-mutation; `uint16`/`float32` rejected; nearest-even
+confirmed (`[0,1,2,3,4] + 0.5 → [0,2,2,4,4]`). Public test passes.
+
+**Measured (2026-09-01):** median **211.4 ms loop vs 2.89 ms vectorized = 73.1×**,
+`wide_scene.jpg` (300, 720, 3) = 648,000 elements, offset +40, 5 repeats, identical outputs.
+Cause of the gap is **per-element Python interpreter overhead** (boxing, ufunc dispatch on
+scalars, bounds checks), not better arithmetic.
+
+**Analysis still to write** (cell `a0c07d3a`, 2–3 sentences): report the measured ratio and
+explain why the comparison is controlled — same image, same offset, same repeat count, same
+rounding/clipping rule; only the loop-vs-array-op strategy varies, and the equality
+assertion runs before any timing is reported.
+
+Study aid: `A1_Task3_code_walkthrough.md` (repo root, delete before packaging).
+
+### Reference — `student_code.py` additions
+
+```python
+def _check_uint8(image: np.ndarray) -> np.ndarray:
+    """Return the image as an array, rejecting anything that is not uint8."""
+    arr = np.asarray(image)
+    if arr.dtype != np.uint8:
+        raise ValueError(f"expected a uint8 image, got {arr.dtype}")
+    return arr
+
+
+def brighten_loop(image: np.ndarray, offset: float) -> np.ndarray:
+    """Brighten uint8 values with loops, nearest-even rounding, and clipping to [0, 255]."""
+    arr = _check_uint8(image)
+    shift = float(offset)
+    source = arr.reshape(-1)                      # one flat loop covers 2-D and 3-D alike
+    result = np.empty(source.size, dtype=np.uint8)
+    for i in range(source.size):
+        value = float(np.rint(float(source[i]) + shift))   # round half to even, then clip
+        if value < 0.0:
+            value = 0.0
+        elif value > 255.0:
+            value = 255.0
+        result[i] = value
+    return result.reshape(arr.shape)
+
+
+def brighten_vectorized(image: np.ndarray, offset: float) -> np.ndarray:
+    """Brighten uint8 values vectorially, nearest-even rounding, and clipping to [0, 255]."""
+    arr = _check_uint8(image)
+    # float64 matches the loop's Python-float arithmetic, so both paths round identically
+    shifted = arr.astype(np.float64) + float(offset)
+    return np.clip(np.rint(shifted), 0.0, 255.0).astype(np.uint8)
+```
+
+### Reference — Task 3 notebook cell (id `d58039dc`)
+
+```python
+# STUDENT WORK — Task 3
+# Controlled comparison: same image, same offset, same rounding-and-clipping rule for both
+# implementations, so the only thing that varies is the loop-versus-array-op strategy.
+paths = {p.name: p for p in a1_tools.discover_images()}
+source = iio.imread(paths["wide_scene.jpg"])          # one fixed uint8 RGB image
+OFFSET, REPEATS = 40, 5
+print(f"timing on wide_scene.jpg {source.shape} {source.dtype} "
+      f"({source.size:,} elements), offset=+{OFFSET}, repeats={REPEATS}")
+
+
+def time_call(function, image, offset, repeats):
+    """Call function(image, offset) `repeats` times; return the last result and elapsed ms."""
+    samples, result = [], None
+    for _ in range(repeats):
+        start = time.perf_counter()
+        result = function(image, offset)
+        samples.append((time.perf_counter() - start) * 1000.0)
+    return result, samples
+
+
+loop_out, loop_ms = time_call(sc.brighten_loop, source, OFFSET, REPEATS)
+vector_out, vector_ms = time_call(sc.brighten_vectorized, source, OFFSET, REPEATS)
+
+identical = bool(np.array_equal(loop_out, vector_out))
+assert identical, "brighten_loop and brighten_vectorized disagree"
+loop_median = float(np.median(loop_ms))
+vector_median = float(np.median(vector_ms))
+
+
+def timing_row(name, samples):
+    """One CSV row: median/min/max milliseconds plus the controlled conditions."""
+    return {
+        "implementation": name, "image": "wide_scene.jpg", "shape": str(source.shape),
+        "elements": int(source.size), "offset": OFFSET, "repeats": REPEATS,
+        "median_ms": round(float(np.median(samples)), 4),
+        "min_ms": round(min(samples), 4), "max_ms": round(max(samples), 4),
+        "outputs_identical": identical,
+        "speedup_vs_loop": round(loop_median / float(np.median(samples)), 2),
+    }
+
+
+timing = pd.DataFrame([timing_row("brighten_loop", loop_ms),
+                       timing_row("brighten_vectorized", vector_ms)])
+timing_path = PATHS["tables"] / "timing.csv"
+timing.to_csv(timing_path, index=False)
+print("wrote", timing_path)
+display(timing)
+
+# --- what the timing is an argument about: both paths share one representation rule ---
+probe = np.array([[0, 10, 250]], dtype=np.uint8)
+print("\nprobe uint8               :", probe.tolist())
+print("brighten_loop(+20)        :", sc.brighten_loop(probe, 20).tolist())
+print("brighten_vectorized(+20)  :", sc.brighten_vectorized(probe, 20).tolist())
+print("naive uint8 add (+20)     :", (probe + np.uint8(20)).tolist(), "<- 250 wraps to 14")
+print(f"\nmedian of {REPEATS} repeats: loop {loop_median:.2f} ms vs vectorized "
+      f"{vector_median:.3f} ms = {loop_median / vector_median:.1f}x; "
+      f"outputs identical: {identical}")
+```
+
+Note: the setup cell (`88492427`) already imports `time`, so the cell needs no new imports.
 
 ---
 
@@ -470,15 +770,9 @@ do not.
 
 All functions live in `src/student_code.py`. Cell ids are the code cell for each task.
 
-### Task 3 — `brighten_loop`, `brighten_vectorized` (8 pts) · cell `d58039dc` · analysis `a0c07d3a`
-- Both add `offset`, then `np.rint` (round-half-to-even) **before** clipping to `[0, 255]`
-  and casting to `uint8`. Loop version uses explicit Python loops; vectorized uses array
-  ops. They must produce identical output.
-- Time each ≥3× on the same image with `time.perf_counter`; report **median ms**, repeat
-  count, and output equality → `outputs/tables/timing.csv`.
-- Public test: `brighten_*(np.array([[0,10,250]], uint8), 20) == [[20,30,255]]`.
+### ~~Task 3~~ — DONE 2026-09-01, see the TASK 3 section below.
 
-### Task 4 — `to_float01`, `to_uint8_safe` (10 pts) · cell `39aeb486` · analysis `6d7db7ff`
+### Task 4 — `to_float01`, `to_uint8_safe` (7 pts) · cell `39aeb486` · analysis `6d7db7ff`
 - `to_float01`: `uint8`/`uint16` → `float32` in `[0, 1]` (divide by the dtype max).
 - `to_uint8_safe`: `float [0,1]` → clip to `[0,1]`, round, ×255, `uint8`.
 - Diagnose/repair `wrong = (float_image * 255).astype(np.uint8)` (no clip → wrap).
@@ -488,21 +782,21 @@ All functions live in `src/student_code.py`. Cell ids are the code cell for each
 - Public test: `to_uint8_safe(to_float01(uint8_arr)) == uint8_arr`, and
   `to_float01(...).dtype == float32`.
 
-### Experiment 1 — `grayscale_mean`, `grayscale_luminance` (10 pts) · cell `be37e794` · analysis `3349cb7a`
+### Experiment 1 — `grayscale_mean`, `grayscale_luminance` (8 pts) · cell `be37e794` · analysis `3349cb7a`
 - `grayscale_mean`: unweighted channel mean, `float32`.
 - `grayscale_luminance`: `0.299R + 0.587G + 0.114B`, `float32`.
 - Compare: correct RGB display · BGR-shown-as-RGB · channel mean · luminance · OpenCV
   grayscale (with correct input convention). Fixed source image and display limits →
   `outputs/figures/color_representations.png`.
 
-### Experiment 2 — `hsv_rule` (9 pts) · cell `c5372f53` · analysis `baee3dde`
+### Experiment 2 — `hsv_rule` (7 pts) · cell `c5372f53` · analysis `baee3dde`
 - Boolean mask for **inclusive** OpenCV-HSV bounds, **including wrapped hue** intervals
   (when `lower[0] > upper[0]`, hue wraps around 180).
 - One rule applied to `color_shapes.png` / `_dim` / `_warm` (aligned). Report
   selected-pixel fraction + one more metric per condition; **append** to
   `experiment_metrics.csv`. Figure → `outputs/figures/hsv_stability.png`.
 
-### Experiment 3 — `transform_frame` (6 pts) · cell `e6418d31` · analysis `64773af5`
+### Experiment 3 — `transform_frame` (4 pts) · cell `e6418d31` · analysis `64773af5`
 - `transform_frame`: flip RGB frame horizontally, multiply red channel by `0.65`, return
   `HxWx3 uint8`.
 - `a1_tools.probe_video(...)` → record input/output/read-back structure in
@@ -511,13 +805,13 @@ All functions live in `src/student_code.py`. Cell ids are the code cell for each
 - Apply `transform_frame` to all frames, write `outputs/videos/a1_transformed.mp4` via
   `a1_tools.write_mp4`, verify with `a1_tools.verify_video_round_trip`.
 
-### Task 5 — failure analysis (10 pts) · cell `4aac6891` · analysis `098cf7e6`
+### Task 5 — failure analysis (7 pts) · cell `4aac6891` · analysis `098cf7e6`
 - Two failures: one image-representation, one video/encoding. Suggested video case:
   frame index = `time * frame_count` (wrong) vs `time * FPS` (right). Show wrong result,
   explain the units error, correct + verify. Figures → `outputs/figures/failure_image.png`,
   `outputs/figures/failure_video.png`.
 
-### Task 6 — extension (10 pts) · cell `f390eecc` · answer `06afeab5`
+### Task 6 — extension (4 pts) · cell `f390eecc` · answer `06afeab5`
 - One question, one controlled comparison, one principal saved output, one conclusion
   (80–130 words). Keep exactly one file in `outputs/extension/` (png/jpg/mp4/csv/json/txt).
   No new packages.
@@ -526,10 +820,45 @@ All functions live in `src/student_code.py`. Cell ids are the code cell for each
 - Section 6 synthesis: cell `92d7684e` (≤180 words).
 - Section 9 reflection: cell `a6e760e3` (100–150 words). Section 0 disclosure already
   lists "Claude Code".
-- Submission: Restart & Run All → export `A1.html` →
-  `python <repo>/Assignment-1/cs5243-A1/scripts/validate_submission.py --assignment A1` →
-  `python <repo>/Assignment-1/cs5243-A1/scripts/package_submission.py --assignment A1` →
+- Submission (⚠️ paths updated 2026-09-01 — the old `Assignment-1/...` script paths were
+  stale): Restart & Run All → export `A1.html` →
+  `python common-setup/scripts/validate_submission.py --assignment A1` →
+  `python common-setup/scripts/package_submission.py --assignment A1` →
   submit `Salas_Samantha_A1.zip`.
+- **Before packaging:** delete or gitignore all nine `A1_*_code_walkthrough.md` files at
+  the repo root (study aids, not submission files).
+
+---
+
+## VERIFYING WORK WITHOUT OPENING JUPYTER
+
+Fast loop used on 2026-09-01, worth reusing for every remaining task.
+
+```bash
+# 1. unit-check the functions directly
+~/miniforge3/envs/cs5243/bin/python -c "import sys; sys.path.insert(0,'A1/src'); import student_code as sc; ..."
+
+# 2. public tests
+~/miniforge3/envs/cs5243/bin/python -m pytest A1/tests_public -q
+
+# 3. full headless Restart-and-Run-All (writes to a scratch copy, leaves A1.ipynb alone)
+~/miniforge3/envs/cs5243/bin/jupyter nbconvert --to notebook --execute --allow-errors \
+  --output /tmp/A1_executed.ipynb A1/A1.ipynb
+# then read /tmp/A1_executed.ipynb with nbformat and list which cells errored
+```
+
+`--allow-errors` is essential: the run *should* stop-and-continue at the first
+unimplemented task. The pass criterion is "the first error is the next task's
+`NotImplementedError`," not "zero errors."
+
+**Editing notebook cells programmatically:** use `nbformat` (read → set `cell.source`,
+clear `outputs`/`execution_count` → `nbformat.validate` → write). It round-trips the file
+in Jupyter's exact JSON style, so the diff stays limited to the edited cell.
+
+**Tooling note (Claude Code on this Windows host):** the Bash tool is **Git Bash on
+Windows**, not WSL — `/home/sqmi/...` paths fail there. Reach the WSL environment with
+`wsl -d Ubuntu -- bash -lc '<command>'`. File read/write tools work fine against the
+`\\wsl.localhost\Ubuntu\...` UNC path.
 
 ---
 
@@ -537,7 +866,7 @@ All functions live in `src/student_code.py`. Cell ids are the code cell for each
 
 ```bash
 git pull
-# recreate env + editable install (see ENVIRONMENT SETUP above)
-# open Assignment-1/cs5243-A1/assignments/A1/A1.ipynb, run the setup cell,
-# then paste the Task 2 code from this file into student_code.py and cell c351ab6d.
+# recreate env + editable install from common-setup/ (see ENVIRONMENT SETUP above)
+# open A1/A1.ipynb, run the setup cell (88492427), then continue at Task 4 (cell 39aeb486).
+# Tasks 1-3 are implemented and verified; nothing to re-paste.
 ```

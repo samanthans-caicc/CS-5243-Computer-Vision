@@ -1,0 +1,23 @@
+experiment,method,condition,metric,value,units
+task4-dtype-range,to_float01 -> to_uint8_safe,wide_scene.jpg uint8,max absolute round-trip error,0.0,levels
+task4-dtype-range,uint8 addition,wide_scene.jpg +80,fraction of samples wrapped darker,0.585707,fraction
+task4-dtype-range,float addition + to_uint8_safe,wide_scene.jpg +80,max disagreement with uint8 addition,255.0,levels
+task4-dtype-range,(float*255).astype(uint8),wide_scene.jpg gain x1.4,fraction of samples disagreeing with to_uint8_safe,0.628897,fraction
+task4-dtype-range,(float*255).astype(uint8),wide_scene.jpg gain x1.4,max disagreement with to_uint8_safe,255.0,levels
+task4-dtype-range,uint16 .astype(uint8),intensity_ramp_16bit.png,monotonic across the middle row,0.0,boolean
+task4-dtype-range,to_float01 -> to_uint8_safe,intensity_ramp_16bit.png,monotonic across the middle row,1.0,boolean
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,normal (color_shapes.png),selected-pixel fraction,0.110152,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,normal (color_shapes.png),target ROI coverage,0.921536,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,normal (color_shapes.png),precision inside target ROI,1.0,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,normal (color_shapes.png),saturation clause pass rate in ROI,0.921536,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,normal (color_shapes.png),value clause pass rate in ROI,0.921536,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,dim (color_shapes_dim.png),selected-pixel fraction,0.0,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,dim (color_shapes_dim.png),target ROI coverage,0.0,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,dim (color_shapes_dim.png),precision inside target ROI,0.0,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,dim (color_shapes_dim.png),saturation clause pass rate in ROI,0.0,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,dim (color_shapes_dim.png),value clause pass rate in ROI,0.921536,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,warm (color_shapes_warm.png),selected-pixel fraction,0.138086,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,warm (color_shapes_warm.png),target ROI coverage,1.0,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,warm (color_shapes_warm.png),precision inside target ROI,0.865629,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,warm (color_shapes_warm.png),saturation clause pass rate in ROI,1.0,fraction
+exp2-hsv-stability,hsv_rule 170-10 / S>=100 / V>=60,warm (color_shapes_warm.png),value clause pass rate in ROI,1.0,fraction

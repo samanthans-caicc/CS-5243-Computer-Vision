@@ -1,0 +1,45 @@
+{
+  "input": {
+    "path": "moving_shapes.mp4",
+    "width": 320,
+    "height": 240,
+    "fps": 12.0,
+    "frame_count": 48,
+    "duration_seconds": 4.0,
+    "codec": "h264"
+  },
+  "output": {
+    "path": "a1_transformed.mp4",
+    "width": 320,
+    "height": 240,
+    "fps": 12.0,
+    "frame_count": 48,
+    "duration_seconds": 4.0,
+    "codec": "h264"
+  },
+  "read_back": {
+    "valid": true,
+    "checks": {
+      "resolution": true,
+      "fps": true,
+      "frame_count": true
+    },
+    "metadata": {
+      "path": "a1_transformed.mp4",
+      "width": 320,
+      "height": 240,
+      "fps": 12.0,
+      "frame_count": 48,
+      "duration_seconds": 4.0,
+      "codec": "h264"
+    }
+  },
+  "transform": {
+    "function": "student_code.transform_frame",
+    "operations": [
+      "horizontal flip",
+      "red channel x 0.65"
+    ],
+    "frames_written": 48
+  }
+}

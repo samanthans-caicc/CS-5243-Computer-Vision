@@ -1,0 +1,3 @@
+method,image,shape,elements,offset,repeats,median_ms,min_ms,max_ms,outputs_equal,speedup_vs_loop
+brighten_loop,wide_scene.jpg,"(300, 720, 3)",648000,40,5,232.9406,224.3183,270.4486,True,1.0
+brighten_vectorized,wide_scene.jpg,"(300, 720, 3)",648000,40,5,3.0683,2.3551,3.6613,True,75.92

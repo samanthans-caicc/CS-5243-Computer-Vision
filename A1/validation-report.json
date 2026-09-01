@@ -1,0 +1,79 @@
+{
+  "assignment": "A1",
+  "assignment_version": "A1-2026.1",
+  "environment_version": "2026.1",
+  "mode": "full",
+  "student": {
+    "name": "Samantha Salas",
+    "first_name": "Samantha",
+    "last_name": "Salas",
+    "abc123": "xso947"
+  },
+  "valid": false,
+  "summary": {
+    "errors": 4,
+    "warnings": 6
+  },
+  "findings": [
+    {
+      "level": "error",
+      "code": "not-executed",
+      "message": "Run every nonempty code cell and save the notebook.",
+      "path": "A1.ipynb"
+    },
+    {
+      "level": "error",
+      "code": "stale-html",
+      "message": "Rendered HTML is missing expected content: 'Samantha'.",
+      "path": "A1.html"
+    },
+    {
+      "level": "error",
+      "code": "stale-html",
+      "message": "Rendered HTML is missing expected content: 'Salas'.",
+      "path": "A1.html"
+    },
+    {
+      "level": "error",
+      "code": "stale-html",
+      "message": "Rendered HTML is missing expected content: 'xso947'.",
+      "path": "A1.html"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": ".ipynb_checkpoints"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "config"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "data"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "src/__pycache__"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "tests_public/__pycache__"
+    },
+    {
+      "level": "warning",
+      "code": "placeholder-text",
+      "message": "Review unresolved placeholder text before submission.",
+      "path": "A1.ipynb"
+    }
+  ]
+}
