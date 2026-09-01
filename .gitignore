@@ -1,0 +1,8 @@
+# Ignore Claude
+.claude/
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore __pycache__ directories
+__pycache__/

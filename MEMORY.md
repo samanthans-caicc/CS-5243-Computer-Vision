@@ -1,6 +1,39 @@
 # CS 5243 Assignment 1 — Work Log / Cross-Device Handoff
 
-_Last updated: 2026-08-30. This file is a scratch/handoff note, not part of the graded submission._
+_Last updated: 2026-08-31. This file is a scratch/handoff note, not part of the graded submission._
+
+---
+
+## ✅ PROGRESS (2026-08-31) — Task 1 + Task 2 applied to the canonical `A1/` starter
+
+Picked up from the "everything reset to stubs" state and re-applied work to the new `A1/`:
+
+- **Task 1 — DONE again.** `image_summary` re-implemented in `A1/src/student_code.py`
+  (the log's reference version, lines ~194–213). The Task 1 notebook cell (`0456cb0b`) was
+  already present/correct in the new notebook (uses `·` separators, `raise` commented out).
+  Runs once kernel is restarted → writes `image_metadata.csv` + `image_overview.png`.
+- **Task 2 — DONE (code applied).** Added `_check_rectangle` helper + implemented all six
+  functions (`crop_image`, `flip_horizontal`, `extract_channel`, `bgr_to_rgb`,
+  `replace_region`, `contact_sheet`) in `A1/src/student_code.py`. The Task 2 notebook cell
+  (`c351ab6d`) now holds the full demo (was still the `NotImplementedError` stub) → writes
+  `numpy_manipulations.png`.
+- **Cell ids in the NEW notebook match the OLD ids** after all (`0456cb0b` Task 1,
+  `c351ab6d` Task 2) — the earlier "new cell ids" warning did not hold; ids are unchanged.
+- **Identity already filled in** the new notebook: Samantha / Salas / xso947.
+- **Verified against current `A1/src/a1_tools.py`:** helpers `discover_images()`,
+  `axes_grid(rows, cols)` (squeeze=False → always 2-D axes), `ensure_output_directories()`
+  all exist and match how the cells call them.
+
+**Still TODO for Task 2:** write the analysis prose in markdown cell `a0e6beb4` (student's
+own words — spatial vs channel), and do a Restart-and-Run-All to confirm both figures land.
+Not yet run headless this session.
+
+**New study-aid file:** `A1_Task2_code_walkthrough.md` at repo root — a plain-markdown
+explainer of the six functions + notebook cell. NOT part of the submission; **delete or
+gitignore before packaging** (outputs/ must contain only required files).
+
+**Reminder:** editing `student_code.py` does NOT affect a running kernel — Restart Kernel
+(or add `%autoreload 2`) before re-running, or the old stub stays cached.
 
 ---
 
@@ -44,7 +77,7 @@ starter, **all 15 functions are unimplemented stubs** and no outputs/analysis ex
 | Part | Points | State |
 |---|---|---|
 | Task 1 — image arrays | 8 | **DONE & committed** (impl + CSV + figure). Analysis prose drafted, minor fixes pending. |
-| Task 2 — NumPy spatial/channel ops | 14 | **Code ready (below), NOT yet applied** to `student_code.py` or notebook. |
+| Task 2 — NumPy spatial/channel ops | 14 | **APPLIED to new `A1/` (2026-08-31)** — 6 funcs + helper in `student_code.py`, cell `c351ab6d` done. Analysis prose + verify run pending. |
 | Task 3 — loop vs vectorized brighten | 8 | Not started |
 | Task 4 — dtype/range safety | 10 | Not started |
 | Experiment 1 — channel order / grayscale | 10 | Not started |
