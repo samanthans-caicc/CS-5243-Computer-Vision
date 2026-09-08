@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inside student_code.py</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<style>
+:root{
+  --ground:#EDEFF2; --surface:#FBFCFD; --surface-2:#E3E7EC; --sunken:#F4F6F9;
+  --ink:#151A21; --ink-2:#39424D; --muted:#5C6774; --line:#CAD1D9; --line-soft:#DEE3E9;
+  --accent:#B5195B; --accent-ink:#8E1147; --accent-wash:#F7E5ED;
+  --teal:#0E7480; --teal-wash:#E0F0F1;
+  --ch-r:#C93F31; --ch-g:#2C8446; --ch-b:#3260C0;
+  --tok-kw:#9B1552; --tok-str:#0E6B60; --tok-num:#8A5A00; --tok-fn:#1E2833; --tok-builtin:#2F5FB3;
+  --shadow:0 1px 2px rgba(21,26,33,.06), 0 8px 24px -18px rgba(21,26,33,.4);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1318; --surface:#161C23; --surface-2:#1F2831; --sunken:#12181F;
+    --ink:#E7EBF0; --ink-2:#C3CBD4; --muted:#8C97A4; --line:#2B343E; --line-soft:#222B34;
+    --accent:#FF6FA5; --accent-ink:#FF8FBA; --accent-wash:#331021;
+    --teal:#4FCBBE; --teal-wash:#0E2A2B;
+    --ch-r:#EE7263; --ch-g:#5FC97A; --ch-b:#7BA2F2;
+    --tok-kw:#FF7FB0; --tok-str:#6FD3C4; --tok-num:#E0A458; --tok-fn:#E7EBF0; --tok-builtin:#8DAFF7;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1318; --surface:#161C23; --surface-2:#1F2831; --sunken:#12181F;
+  --ink:#E7EBF0; --ink-2:#C3CBD4; --muted:#8C97A4; --line:#2B343E; --line-soft:#222B34;
+  --accent:#FF6FA5; --accent-ink:#FF8FBA; --accent-wash:#331021;
+  --teal:#4FCBBE; --teal-wash:#0E2A2B;
+  --ch-r:#EE7263; --ch-g:#5FC97A; --ch-b:#7BA2F2;
+  --tok-kw:#FF7FB0; --tok-str:#6FD3C4; --tok-num:#E0A458; --tok-fn:#E7EBF0; --tok-builtin:#8DAFF7;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground); color:var(--ink);
+  font-family:"Newsreader", Georgia, "Times New Roman", serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px 96px}
+h1,h2,h3,.disp{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; text-wrap:balance}
+code,kbd,pre,.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+a{color:var(--accent-ink); text-underline-offset:3px}
+
+/* ---------- masthead ---------- */
+.mast{padding:64px 0 40px; border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"JetBrains Mono",monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block}
+h1{
+  margin:18px 0 0; font-size:clamp(38px,7vw,72px); line-height:.98;
+  font-weight:800; letter-spacing:-.028em;
+}
+h1 .file{color:var(--accent); font-family:"JetBrains Mono",monospace; font-size:.62em; letter-spacing:-.02em; font-weight:600}
+.deck{
+  margin:20px 0 0; max-width:63ch; font-size:20px; line-height:1.5;
+  color:var(--ink-2); font-weight:300;
+}
+.stats{display:flex; flex-wrap:wrap; gap:0; margin-top:34px; border:1px solid var(--line); border-radius:3px; background:var(--surface); overflow:hidden}
+.stat{flex:1 1 150px; padding:14px 18px; border-right:1px solid var(--line-soft)}
+.stat:last-child{border-right:0}
+.stat b{display:block; font-family:"Bricolage Grotesque",sans-serif; font-size:26px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.stat span{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.stat.pass b{color:var(--teal)}
+
+/* ---------- invariants ---------- */
+.invariants{margin:56px 0 0}
+.sec-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px}
+.sec-num{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--accent); letter-spacing:.1em}
+h2{margin:0; font-size:clamp(26px,3.4vw,34px); font-weight:700; letter-spacing:-.02em}
+.sec-sub{max-width:62ch; color:var(--muted); margin:8px 0 26px; font-size:17px}
+.inv-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px}
+.inv{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:18px 18px 20px; box-shadow:var(--shadow)}
+.inv h3{margin:0 0 8px; font-size:16px; font-weight:700; letter-spacing:-.01em}
+.inv p{margin:0; font-size:15.5px; color:var(--ink-2); line-height:1.55}
+.inv .tag{font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:10px}
+
+/* ---------- annotated source ---------- */
+.part{margin:72px 0 0; padding-top:8px}
+.pair{display:grid; gap:20px; margin-top:24px; align-items:start}
+@media (min-width:940px){ .pair{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr); gap:32px} }
+.srcline{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 8px; display:flex; align-items:center; gap:8px;
+}
+.srcline::before{content:""; width:14px; height:1px; background:var(--accent); flex:none}
+pre{
+  margin:0; background:var(--sunken); border:1px solid var(--line-soft); border-radius:3px;
+  padding:16px 18px; overflow-x:auto; font-size:13.2px; line-height:1.62;
+}
+pre code{background:none; padding:0; font-size:inherit}
+.note p{margin:0 0 14px; color:var(--ink-2)}
+.note p:last-child{margin-bottom:0}
+.note strong{color:var(--ink); font-weight:600}
+.note code, p code, li code, td code{
+  background:var(--surface-2); border-radius:2px; padding:1px 5px; font-size:.86em; color:var(--ink);
+}
+.why{
+  border-left:2px solid var(--accent); padding:2px 0 2px 16px; margin:16px 0 0;
+}
+.why b{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:4px}
+.why p{margin:0; font-size:16px}
+
+/* ---------- diagrams ---------- */
+figure{margin:26px 0 0; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 20px 14px; box-shadow:var(--shadow)}
+figure svg{display:block; width:100%; height:auto}
+figcaption{margin-top:12px; font-size:14.5px; color:var(--muted); line-height:1.5}
+.svg-label{font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.06em; fill:var(--muted)}
+.svg-strong{font-family:"JetBrains Mono",monospace; font-size:10px; fill:var(--ink); letter-spacing:.04em}
+
+/* ---------- channel chips ---------- */
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin:16px 0 0}
+.chip{
+  font-family:"JetBrains Mono",monospace; font-size:11.5px; padding:4px 10px; border-radius:2px;
+  border:1px solid currentColor; background:var(--surface);
+}
+.chip.r{color:var(--ch-r)} .chip.g{color:var(--ch-g)} .chip.b{color:var(--ch-b)}
+
+/* ---------- table ---------- */
+.tablewrap{overflow-x:auto; margin-top:22px; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:620px; font-size:15px}
+th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--line-soft); vertical-align:top}
+th{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); font-weight:400; background:var(--sunken);
+}
+tr:last-child td{border-bottom:0}
+td.fn{font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--accent-ink); white-space:nowrap}
+
+/* ---------- edges ---------- */
+.edges{display:grid; gap:0; margin-top:24px; border:1px solid var(--line); border-radius:3px; background:var(--surface); overflow:hidden}
+.edge{display:grid; gap:4px 18px; padding:18px 20px; border-bottom:1px solid var(--line-soft)}
+@media (min-width:760px){ .edge{grid-template-columns:210px minmax(0,1fr)} }
+.edge:last-child{border-bottom:0}
+.edge h3{margin:0; font-size:14px; font-weight:700; letter-spacing:-.01em}
+.edge h3 span{display:block; font-family:"JetBrains Mono",monospace; font-weight:400; font-size:11px; color:var(--muted); margin-top:4px; letter-spacing:0}
+.edge p{margin:0; font-size:15.5px; color:var(--ink-2)}
+
+/* ---------- verify ---------- */
+.verify{margin-top:72px; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:28px; box-shadow:var(--shadow)}
+.verify h2{font-size:24px}
+.term{
+  margin-top:18px; background:var(--sunken); border:1px solid var(--line-soft); border-radius:3px;
+  padding:16px 18px; font-family:"JetBrains Mono",monospace; font-size:13px; overflow-x:auto; line-height:1.7;
+}
+.term .prompt{color:var(--accent)}
+.term .ok{color:var(--teal)}
+footer{margin-top:56px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:14px}
+
+/* ---------- syntax ---------- */
+.hljs-keyword,.hljs-literal{color:var(--tok-kw)}
+.hljs-string{color:var(--tok-str)}
+.hljs-number{color:var(--tok-num)}
+.hljs-comment{color:var(--muted); font-style:italic}
+.hljs-built_in,.hljs-type{color:var(--tok-builtin)}
+.hljs-title,.hljs-title.function_,.hljs-title.class_{color:var(--tok-fn); font-weight:600}
+.hljs-params{color:var(--ink-2)}
+.hljs-attr{color:var(--ink-2)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){ .inv,.edge{transition:none} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="eyebrow">
+    <span class="dot"></span>CS 5243 · Assignment 1<span>/</span>A1-2026.1<span>/</span>Code walkthrough
+  </div>
+  <h1>Inside <span class="file">student_code.py</span></h1>
+  <p class="deck">Fifteen graded functions that take an image apart — grid, channels, dtype, color space — and put it back together without ever damaging the array they were handed. Here is what each one does, and why it does it that way.</p>
+
+  <div class="stats">
+    <div class="stat"><b>15</b><span>graded functions</span></div>
+    <div class="stat"><b>4</b><span>private helpers</span></div>
+    <div class="stat"><b>217</b><span>lines</span></div>
+    <div class="stat"><b>1</b><span>dependency — numpy</span></div>
+    <div class="stat pass"><b>6 / 6</b><span>public tests pass</span></div>
+  </div>
+</header>
+
+<section class="invariants">
+  <div class="sec-head"><span class="sec-num">CROSS-CUTTING</span><h2>Four rules the whole file obeys</h2></div>
+  <p class="sec-sub">Every function here is a variation on the same four commitments. Once you see them, the file stops being fifteen separate problems.</p>
+  <div class="inv-grid">
+    <div class="inv">
+      <span class="tag">Rule 01</span>
+      <h3>The caller's array is never touched</h3>
+      <p>Every return path ends in <code>.copy()</code> or a freshly allocated array. Slicing NumPy gives you a <em>view</em> — writing through it would silently edit the original image.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 02</span>
+      <h3>Validate first, then act</h3>
+      <p><code>_check_rectangle</code>, <code>_check_uint8</code>, <code>_check_rgb</code>. Nothing is allocated until the inputs are known good, so a bad call raises <code>ValueError</code> instead of producing a quietly wrong image.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 03</span>
+      <h3>Round, then clip, then cast</h3>
+      <p>In that order, always. <code>np.rint</code> is round-half-to-even; clipping before the <code>uint8</code> cast is what stops <code>260</code> from wrapping around to <code>4</code>.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 04</span>
+      <h3>The dtype sets the scale</h3>
+      <p>Normalization divides by <code>np.iinfo(dtype).max</code>, never by the brightest pixel present. The same stored value maps to the same float in every image.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Describing an image</h2></div>
+  <p class="sec-sub">One function, and it has to answer for both layouts an image can arrive in.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:10–29 · image_summary</p>
+      <pre><code class="language-python">arr = np.asarray(image)
+if arr.ndim == 2:                       # grayscale: no channel axis
+    height, width = arr.shape
+    channels = 1
+elif arr.ndim == 3:                     # color: (H, W, C) with C == 3 or 4
+    height, width, channels = arr.shape
+else:
+    raise ValueError(...)
+return {
+    "shape": tuple(int(n) for n in arr.shape),
+    "height": int(height), "width": int(width),
+    "channels": int(channels),
+    "dtype": str(arr.dtype),
+    "range": (arr.min().item(), arr.max().item()),
+    "mean": float(arr.mean()),
+    "nbytes": int(arr.nbytes),
+}</code></pre>
+    </div>
+    <div class="note">
+      <p>A grayscale image is <code>(H, W)</code> — two axes, no channel axis at all. A color image is <code>(H, W, C)</code>. The branch exists because <strong>"channels" is not a stored property of a grayscale array</strong>; the value <code>1</code> is a convention this function imposes so the metadata table has a column that is always filled.</p>
+      <p>The exit is deliberately made of Python scalars: <code>int()</code>, <code>float()</code>, <code>str()</code>, and <code>.item()</code> on the min/max. NumPy scalars would serialize into the CSV as <code>np.uint8(0)</code> instead of <code>0</code>.</p>
+      <div class="why">
+        <b>Worth knowing</b>
+        <p><code>arr.mean()</code> on a <code>uint8</code> array accumulates in <code>float64</code>, so a bright 4K image will not overflow the sum. That is NumPy's choice, not an accident of this code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Indexing: crops, flips, channels</h2></div>
+  <p class="sec-sub">Five functions, one shared guard, and a single idea — slice, then copy.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:32–46 · _check_rectangle, crop_image</p>
+      <pre><code class="language-python">def _check_rectangle(image, top, left, height, width):
+    if min(int(top), int(left)) &lt; 0 or min(int(height), int(width)) &lt;= 0:
+        raise ValueError(...)
+    if top + height &gt; image.shape[0] or left + width &gt; image.shape[1]:
+        raise ValueError(...)
+
+def crop_image(image, top, left, height, width):
+    arr = np.asarray(image)
+    _check_rectangle(arr, top, left, height, width)
+    return arr[top:top + height, left:left + width].copy()</code></pre>
+    </div>
+    <div class="note">
+      <p>The guard encodes the assignment's contract exactly: origin at or above zero, size strictly positive, far edge inside the image. Note the asymmetry — <strong>a zero origin is legal, a zero size is not</strong>, which is why one comparison is <code>&lt; 0</code> and the other <code>&lt;= 0</code>.</p>
+      <p>The guard is doing real work that plain slicing cannot. Python happily accepts <code>arr[5:2]</code> and <code>arr[0:9999]</code>, returning an empty or truncated array with no complaint. Silent wrong shapes are worse than an exception.</p>
+      <div class="why">
+        <b>Why .copy()</b>
+        <p><code>arr[a:b, c:d]</code> is a view into the caller's memory. Return it raw and a later <code>crop[:] = 0</code> would blank out part of the original image. The copy costs one allocation and buys independence — Rule 01.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:49–69 · flip_horizontal, extract_channel, bgr_to_rgb</p>
+      <pre><code class="language-python">def flip_horizontal(image):
+    return np.asarray(image)[:, ::-1].copy()
+
+def extract_channel(image, channel):
+    arr = np.asarray(image)
+    if arr.ndim != 3: raise ValueError(...)
+    if not 0 &lt;= channel &lt; arr.shape[2]: raise ValueError(...)
+    return arr[:, :, channel].copy()
+
+def bgr_to_rgb(image):
+    arr = np.asarray(image)
+    if arr.ndim != 3 or arr.shape[2] != 3: raise ValueError(...)
+    return arr[:, :, ::-1].copy()</code></pre>
+    </div>
+    <div class="note">
+      <p>Three one-liners that differ only in <em>which axis gets the reversed stride</em>. <code>[:, ::-1]</code> reverses columns — a mirror. <code>[:, :, ::-1]</code> reverses the channel axis — <code>BGR</code> becomes <code>RGB</code>. Same operator, completely different meaning, decided entirely by position.</p>
+      <div class="chips">
+        <span class="chip b">index 0 — B</span>
+        <span class="chip g">index 1 — G</span>
+        <span class="chip r">index 2 — R</span>
+      </div>
+      <p style="margin-top:14px">Reversed becomes <span style="color:var(--ch-r)">R</span>, <span style="color:var(--ch-g)">G</span>, <span style="color:var(--ch-b)">B</span>. This is the conversion you need every time OpenCV hands an array to Matplotlib, because <code>cv2.imread</code> returns BGR and <code>plt.imshow</code> assumes RGB.</p>
+      <p><code>extract_channel</code> uses <code>0 &lt;= channel &lt; shape[2]</code> rather than letting NumPy index. Without it, <code>channel = -1</code> would quietly return the <em>last</em> channel — a plausible-looking result from a bug.</p>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:72–79 · replace_region</p>
+      <pre><code class="language-python">arr = np.asarray(image)
+_check_rectangle(arr, top, left, height, width)
+out = arr.copy()
+out[top:top + height, left:left + width] = value
+return out</code></pre>
+    </div>
+    <div class="note">
+      <p>The mirror image of <code>crop_image</code>, and it reuses the same guard — the rectangle contract is written once and enforced in both places.</p>
+      <p>Here the copy comes <em>first</em>: copy the whole image, then mutate the copy. That is what makes an in-place-looking operation non-destructive.</p>
+      <p><code>value</code> can be a scalar or a 3-element sequence, and broadcasting handles both without a branch. A single <code>0</code> fills every channel; <code>[255, 0, 0]</code> paints red across the rectangle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Packing the contact sheet</h2></div>
+  <p class="sec-sub">The only function in the file with real geometry in it.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:82–112 · contact_sheet</p>
+      <pre><code class="language-python">is_rgb = items[0].ndim == 3
+for im in items:
+    if im.dtype != np.uint8: raise ValueError(...)
+    ok = (im.ndim == 3 and im.shape[2] == 3) if is_rgb else (im.ndim == 2)
+    if not ok: raise ValueError(...)
+
+border = gutter = 8
+cell_h = max(im.shape[0] for im in items)
+cell_w = max(im.shape[1] for im in items)
+rows = (len(items) + columns - 1) // columns
+height = 2 * border + rows * cell_h + (rows - 1) * gutter
+width  = 2 * border + columns * cell_w + (columns - 1) * gutter
+sheet = np.full(shape, fill_value, dtype=np.uint8)
+
+for idx, im in enumerate(items):
+    r, c = divmod(idx, columns)
+    y0 = border + r * (cell_h + gutter)
+    x0 = border + c * (cell_w + gutter)
+    sheet[y0:y0 + im.shape[0], x0:x0 + im.shape[1]] = im</code></pre>
+    </div>
+    <div class="note">
+      <p>The first image decides the mode — grayscale or RGB — and every other image must agree. Mixing them is rejected rather than coerced, because there is no correct silent answer to "paste a 2-D image into a 3-channel sheet."</p>
+      <p>The cell is sized to the <strong>largest</strong> image, so every cell is identical and the grid stays rectangular. Smaller images sit at the top-left of their cell and the leftover area keeps the fill color.</p>
+      <p>Two small arithmetic details carry the layout:</p>
+      <p><code>(len + columns - 1) // columns</code> is integer ceiling division — 7 images in 3 columns needs 3 rows, not 2.</p>
+      <p><code>(rows - 1) * gutter</code>, not <code>rows * gutter</code> — gutters live <em>between</em> cells, so <em>n</em> cells have <em>n−1</em> gaps. The outer edge is the border's job.</p>
+      <p><code>divmod(idx, columns)</code> converts a flat index into a <code>(row, column)</code> pair in one call — the standard way to walk a grid stored as a list.</p>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 640 260" role="img" aria-label="Contact sheet geometry: an 8-pixel border around a grid of equal cells separated by 8-pixel gutters, with each image aligned to the top-left of its cell.">
+      <!-- sheet -->
+      <rect x="40" y="24" width="470" height="212" fill="var(--sunken)" stroke="var(--line)"/>
+      <!-- cells -->
+      <g fill="none" stroke="var(--line)" stroke-dasharray="3 3">
+        <rect x="72" y="52" width="126" height="72"/>
+        <rect x="214" y="52" width="126" height="72"/>
+        <rect x="356" y="52" width="126" height="72"/>
+        <rect x="72" y="140" width="126" height="72"/>
+        <rect x="214" y="140" width="126" height="72"/>
+        <rect x="356" y="140" width="126" height="72"/>
+      </g>
+      <!-- images, top-left aligned, varying sizes -->
+      <g opacity="0.9">
+        <rect x="72" y="52" width="126" height="72" fill="var(--ch-b)" opacity=".55"/>
+        <rect x="214" y="52" width="94" height="72" fill="var(--ch-g)" opacity=".55"/>
+        <rect x="356" y="52" width="126" height="56" fill="var(--ch-r)" opacity=".55"/>
+        <rect x="72" y="140" width="110" height="60" fill="var(--accent)" opacity=".45"/>
+        <rect x="214" y="140" width="126" height="72" fill="var(--teal)" opacity=".5"/>
+      </g>
+      <text x="392" y="182" class="svg-label">empty cell</text>
+      <text x="392" y="196" class="svg-label">(fill_value)</text>
+      <!-- border annotation -->
+      <line x1="40" y1="240" x2="72" y2="240" stroke="var(--accent)" stroke-width="1.5"/>
+      <text x="46" y="254" class="svg-strong">border 8</text>
+      <!-- gutter annotation -->
+      <line x1="198" y1="18" x2="214" y2="18" stroke="var(--accent)" stroke-width="1.5"/>
+      <text x="150" y="14" class="svg-strong">gutter 8</text>
+      <!-- cell dims -->
+      <line x1="530" y1="52" x2="530" y2="124" stroke="var(--muted)" stroke-width="1"/>
+      <text x="540" y="84" class="svg-label">cell_h = max height</text>
+      <text x="540" y="98" class="svg-label">of all images</text>
+      <line x1="356" y1="230" x2="482" y2="230" stroke="var(--muted)" stroke-width="1"/>
+      <text x="356" y="224" class="svg-label">cell_w = max width</text>
+    </svg>
+    <figcaption>Six cells, three columns. Cells are uniform and sized to the largest input; images anchor top-left and leave the fill color showing wherever they are smaller. The border wraps the outside once; gutters appear only between neighbors.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Brightness, twice — and the tie-break that makes them agree</h2></div>
+  <p class="sec-sub">The point of writing the same operation two ways is the timing comparison. The point of writing them <em>carefully</em> is that the outputs must be bit-identical.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:123–144 · brighten_loop, brighten_vectorized</p>
+      <pre><code class="language-python">def brighten_loop(image, offset):
+    arr = _check_uint8(image)
+    shift = float(offset)
+    source = arr.reshape(-1)         # one flat loop covers 2-D and 3-D alike
+    result = np.empty(source.size, dtype=np.uint8)
+    for i in range(source.size):
+        value = float(np.rint(float(source[i]) + shift))
+        if value &lt; 0.0:     value = 0.0
+        elif value &gt; 255.0: value = 255.0
+        result[i] = value
+    return result.reshape(arr.shape)
+
+def brighten_vectorized(image, offset):
+    arr = _check_uint8(image)
+    shifted = arr.astype(np.float64) + float(offset)
+    return np.clip(np.rint(shifted), 0.0, 255.0).astype(np.uint8)</code></pre>
+    </div>
+    <div class="note">
+      <p><code>reshape(-1)</code> flattens to 1-D so a single loop handles grayscale and color alike, and the final <code>reshape(arr.shape)</code> restores the original layout. No nested loops, no separate 2-D/3-D code paths.</p>
+      <p><strong>Why <code>uint8 + offset</code> cannot be done directly:</strong> NumPy would wrap. <code>200 + 100</code> in <code>uint8</code> is <code>44</code>, not <code>255</code>. Both functions escape to floating point first, which is what makes clipping meaningful.</p>
+      <div class="why">
+        <b>The tie-break</b>
+        <p><code>np.rint</code> is round-half-to-<em>even</em>: <code>0.5 → 0</code>, <code>1.5 → 2</code>, <code>2.5 → 2</code>. It is used in <em>both</em> functions, and both compute in a Python <code>float</code>/<code>float64</code>. That is the reason <code>outputs_equal</code> in <code>timing.csv</code> comes out <code>True</code> for a half-integer offset such as <code>12.5</code> — a loop using Python's <code>int(x + 0.5)</code> would round half-up and disagree with the vectorized path on exactly those pixels.</p>
+      </div>
+      <p>The clipping is spelled out as <code>if/elif</code> in the loop and <code>np.clip</code> in the vectorized version. Same three-step order in both — round, clip, cast.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Crossing between dtypes</h2></div>
+  <p class="sec-sub">Two functions that have to be exact inverses on the round trip.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:147–165 · to_float01, to_uint8_safe</p>
+      <pre><code class="language-python">def to_float01(image):
+    arr = np.asarray(image)
+    if arr.dtype not in (np.uint8, np.uint16):
+        raise ValueError(...)
+    return (arr.astype(np.float32)
+            / np.float32(np.iinfo(arr.dtype).max)).astype(np.float32)
+
+def to_uint8_safe(image):
+    arr = np.asarray(image)
+    if arr.dtype.kind != "f":
+        raise ValueError(...)
+    scaled = np.clip(arr.astype(np.float64), 0.0, 1.0) * 255.0
+    return np.rint(scaled).astype(np.uint8)</code></pre>
+    </div>
+    <div class="note">
+      <p><strong>Divide by the dtype's maximum, not the image's.</strong> <code>np.iinfo(uint8).max</code> is 255 and <code>np.iinfo(uint16).max</code> is 65535 — properties of the representation. Normalizing by <code>arr.max()</code> instead would make a dim photograph and a bright one map to the same float range, destroying exactly the intensity information the experiment is measuring.</p>
+      <p><code>dtype.kind != "f"</code> catches <code>float16</code>, <code>float32</code> and <code>float64</code> in one test, instead of listing them.</p>
+      <div class="why">
+        <b>Clip before scale, round in float64</b>
+        <p>Clipping to <code>[0, 1]</code> <em>before</em> multiplying means an out-of-range <code>1.2</code> saturates to <code>255</code> rather than becoming <code>306</code> and wrapping to <code>50</code> on the cast. And doing it in <code>float64</code> is what makes the round trip exact: <code>k/255</code> is not representable in binary, and in <code>float32</code> the accumulated error can land a value a hair below <code>k + 0.5</code> where <code>float64</code> lands it on <code>k</code>.</p>
+      </div>
+      <p>Note the asymmetry between the two: <code>to_float01</code> works in <code>float32</code> because that is the dtype the assignment asks it to produce, while <code>to_uint8_safe</code> promotes to <code>float64</code> because it only needs precision, not a dtype.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Color: two grays and a circular hue</h2></div>
+  <p class="sec-sub">Where the code stops being about arrays and starts being about how people see.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:176–187 · grayscale_mean, grayscale_luminance</p>
+      <pre><code class="language-python">def grayscale_mean(image_rgb):
+    arr = _check_rgb(image_rgb)
+    return arr.astype(np.float32).mean(axis=2, dtype=np.float32)
+
+def grayscale_luminance(image_rgb):
+    arr = _check_rgb(image_rgb).astype(np.float32)
+    weights = np.array([0.299, 0.587, 0.114], dtype=np.float32)   # ITU-R BT.601
+    return (arr @ weights).astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p>Two answers to "make this gray," and the difference between them is the whole point of the experiment.</p>
+      <p><code>grayscale_mean</code> treats the channels as equally important. <code>grayscale_luminance</code> weights them by how strongly human vision responds:</p>
+      <div class="chips">
+        <span class="chip r">R · 0.299</span>
+        <span class="chip g">G · 0.587</span>
+        <span class="chip b">B · 0.114</span>
+      </div>
+      <p style="margin-top:14px">Green carries nearly <strong>60%</strong> of perceived brightness and blue barely a tenth. A saturated blue region comes out far darker under BT.601 than under a flat mean — which is what you will see when you diff the two output figures.</p>
+      <p><code>arr @ weights</code> is a matrix product contracting the last axis: an <code>(H, W, 3)</code> array against a <code>(3,)</code> vector gives <code>(H, W)</code>. One operator replaces three multiplies and two adds.</p>
+      <div class="why">
+        <b>Why float32 everywhere</b>
+        <p>The functions never rescale, so whatever the caller passes — 0–255 or 0–1 — comes back on the same scale. <code>mean(axis=2, dtype=np.float32)</code> pins the accumulator explicitly instead of letting NumPy pick.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:190–207 · hsv_rule</p>
+      <pre><code class="language-python">hue, sat, val = (arr[:, :, i].astype(np.int32) for i in range(3))
+
+mask = (sat &gt;= low[1]) &amp; (sat &lt;= high[1]) \
+     &amp; (val &gt;= low[2]) &amp; (val &lt;= high[2])
+
+if low[0] &lt;= high[0]:
+    hue_mask = (hue &gt;= low[0]) &amp; (hue &lt;= high[0])
+else:
+    # OpenCV hue is 0-179 and circular: lower &gt; upper crosses 0
+    hue_mask = (hue &gt;= low[0]) | (hue &lt;= high[0])
+return mask &amp; hue_mask</code></pre>
+    </div>
+    <div class="note">
+      <p>Saturation and value are ordinary intervals. Hue is not — <strong>it is an angle</strong>, and OpenCV stores it as 0–179 (degrees halved, so the full circle fits in a <code>uint8</code>).</p>
+      <p>Red sits on the seam. There is no pair <code>lower ≤ upper</code> that selects it, so the convention is that <code>lower &gt; upper</code> means "wrap through zero," and the test flips from <code>AND</code> to <code>OR</code>. That single operator swap is the entire wraparound implementation.</p>
+      <p>The cast to <code>int32</code> is defensive: comparing <code>uint8</code> pixels against a bound like <code>-1</code> or <code>300</code> would otherwise involve dtype promotion rules you do not want to reason about mid-mask.</p>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 640 220" role="img" aria-label="Two hue ranges on the OpenCV 0 to 179 hue circle: a normal range from 35 to 85 selecting green, and a wrapped range from 170 to 10 crossing zero to select red.">
+      <defs>
+        <marker id="ar" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L8 4 L0 8 z" fill="var(--muted)"/>
+        </marker>
+      </defs>
+      <!-- left: normal range -->
+      <g transform="translate(150,110)">
+        <circle r="66" fill="none" stroke="var(--line)" stroke-width="14"/>
+        <!-- arc 35..85 of 180 -> angles: (v/180)*360 - 90 => 70-90=-20deg to 170-90=80deg -->
+        <path d="M 62.0 -22.6 A 66 66 0 0 1 11.5 64.9" fill="none" stroke="var(--ch-g)" stroke-width="14" stroke-linecap="butt"/>
+        <line x1="0" y1="-84" x2="0" y2="-74" stroke="var(--muted)"/>
+        <text x="0" y="-92" class="svg-strong" text-anchor="middle">0</text>
+        <text x="0" y="4" class="svg-strong" text-anchor="middle">lower ≤ upper</text>
+        <text x="0" y="20" class="svg-label" text-anchor="middle">35 → 85 · AND</text>
+        <text x="0" y="100" class="svg-label" text-anchor="middle">one contiguous arc</text>
+      </g>
+      <!-- right: wrapped -->
+      <g transform="translate(450,110)">
+        <circle r="66" fill="none" stroke="var(--line)" stroke-width="14"/>
+        <!-- 170..179.9 : 340-90=250deg to 360-90=270 ; and 0..10 : -90 to 20-90=-70 -->
+        <path d="M -22.6 -62.0 A 66 66 0 0 1 22.6 -62.0" fill="none" stroke="var(--ch-r)" stroke-width="14"/>
+        <line x1="0" y1="-84" x2="0" y2="-74" stroke="var(--accent)"/>
+        <text x="0" y="-92" class="svg-strong" text-anchor="middle">0</text>
+        <text x="0" y="4" class="svg-strong" text-anchor="middle">lower &gt; upper</text>
+        <text x="0" y="20" class="svg-label" text-anchor="middle">170 → 10 · OR</text>
+        <text x="0" y="100" class="svg-label" text-anchor="middle">crosses the seam</text>
+      </g>
+      <line x1="238" y1="110" x2="352" y2="110" stroke="var(--muted)" stroke-dasharray="4 4" marker-end="url(#ar)"/>
+      <text x="295" y="102" class="svg-label" text-anchor="middle">same code,</text>
+      <text x="295" y="130" class="svg-label" text-anchor="middle">one operator swapped</text>
+    </svg>
+    <figcaption>Green occupies a contiguous stretch of the hue circle, so an <code>AND</code> of two bounds selects it. Red straddles 0, so its bounds arrive reversed and the same two comparisons are joined with <code>OR</code> instead.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">07</span><h2>One video frame at a time</h2></div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:210–217 · transform_frame</p>
+      <pre><code class="language-python">arr = _check_rgb(frame_rgb)
+if arr.dtype != np.uint8:
+    raise ValueError(f"expected a uint8 frame, got {arr.dtype}")
+out = arr[:, ::-1, :].astype(np.float64)
+out[:, :, 0] *= 0.65                    # scale red only
+return np.clip(np.rint(out), 0.0, 255.0).astype(np.uint8)</code></pre>
+    </div>
+    <div class="note">
+      <p>The whole file converges here. Reverse the column axis (section 02), promote to float so the multiply does not wrap (section 04), scale channel 0 only, then round → clip → cast (Rule 03) back to the <code>uint8</code> the video encoder requires.</p>
+      <p>The <code>.astype(np.float64)</code> also produces the copy, so <code>out[:, :, 0] *= 0.65</code> is safe to write in place — it is mutating a new array, never the decoded frame.</p>
+      <p>Because it is pure and stateless, the same function drives every frame of <code>a1_transformed.mp4</code> and can be unit-tested on a single hand-made 2×2 array.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ helpers ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">08</span><h2>The four guards, in one place</h2></div>
+  <p class="sec-sub">Every validation in the file routes through one of these. They are why the graded functions read as three or four lines each.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Helper</th><th>Rejects</th><th>Used by</th></tr></thead>
+      <tbody>
+        <tr><td class="fn">_check_rectangle</td><td>Negative origin, non-positive size, or a far edge past the image</td><td><code>crop_image</code>, <code>replace_region</code></td></tr>
+        <tr><td class="fn">_check_uint8</td><td>Any dtype other than <code>uint8</code></td><td><code>brighten_loop</code>, <code>brighten_vectorized</code></td></tr>
+        <tr><td class="fn">_check_rgb</td><td>Anything that is not <code>(H, W, 3)</code></td><td><code>grayscale_mean</code>, <code>grayscale_luminance</code>, <code>hsv_rule</code>, <code>transform_frame</code></td></tr>
+        <tr><td class="fn">np.asarray</td><td>Nothing — it normalizes lists and views into arrays at every entry point</td><td>All of the above</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ edges ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Sharp edges</h2></div>
+  <p class="sec-sub">Nothing here fails the public tests. These are the places where the code and its description have drifted slightly, or where a future edit could go wrong.</p>
+
+  <div class="edges">
+    <div class="edge">
+      <h3>The loop calls into NumPy per pixel<span>brighten_loop:130</span></h3>
+      <p><code>np.rint</code> inside a Python loop pays NumPy's scalar-dispatch cost on every element. Python's built-in <code>round()</code> is <em>also</em> half-to-even, so it would give byte-identical results far faster. For a timing experiment that exists to show how slow per-pixel Python is, keeping <code>np.rint</code> is defensible — but if you cite the ratio in the analysis, be clear that part of it is call overhead, not just the loop.</p>
+    </div>
+    <div class="edge">
+      <h3>Half-coerced bounds check<span>_check_rectangle:34–39</span></h3>
+      <p>The sign check calls <code>int(top)</code>, but the bounds check uses <code>top + height</code> unconverted. Integer inputs behave identically either way; a float like <code>top=1.5</code> would slip past the guard and raise a less clear <code>IndexError</code> from the slice instead.</p>
+    </div>
+    <div class="edge">
+      <h3>A guard named for the wrong color space<span>hsv_rule:192</span></h3>
+      <p><code>hsv_rule</code> validates its input with <code>_check_rgb</code>. The check itself is correct — it only asserts <code>(H, W, 3)</code> — but the name says RGB while the argument is HSV. <code>_check_three_channel</code> would say what it actually means.</p>
+    </div>
+    <div class="edge">
+      <h3>Docstring promises a view<span>flip_horizontal:50</span></h3>
+      <p>"Return a horizontally flipped view or copy" — it always returns a copy. Correct behavior, imprecise wording, and the kind of thing a grader reading docstrings will notice.</p>
+    </div>
+    <div class="edge">
+      <h3>fill_value is unchecked<span>contact_sheet:105</span></h3>
+      <p><code>np.full(shape, fill_value, dtype=np.uint8)</code> will happily take <code>300</code> and wrap it. The <code>columns</code> and dtype arguments are validated; this one is not.</p>
+    </div>
+  </div>
+</section>
+
+<section class="verify">
+  <h2>Check it yourself</h2>
+  <p style="margin:10px 0 0; color:var(--ink-2); max-width:62ch">Run from the workspace folder that holds <code>A1/</code> and <code>common-setup/</code>. The public tests are sanity checks, not a correctness proof — they do not exercise hue wraparound, mixed-size contact sheets, or the rectangle guards.</p>
+  <div class="term">
+<span class="prompt">$</span> conda activate cs5243
+<span class="prompt">$</span> pytest A1/tests_public -q
+......                                                   [100%]
+<span class="ok">6 passed in 6.40s</span>
+  </div>
+  <p style="margin:16px 0 0; color:var(--muted); font-size:15px">Covered: imports and signatures, asset discovery, basic spatial ops, loop-vs-vectorized agreement, the <code>uint8 → float → uint8</code> round trip, and the video probe and read-back.</p>
+</section>
+
+<footer>
+  Walkthrough of <code>A1/src/student_code.py</code> — 217 lines, NumPy only. Assignment A1-2026.1, environment 2026.1.
+</footer>
+
+</div>
+
+<script>
+  hljs.highlightAll();
+</script>
+</body>
+</html>
