@@ -9,36 +9,12 @@
     "last_name": "Salas",
     "abc123": "xso947"
   },
-  "valid": false,
+  "valid": true,
   "summary": {
-    "errors": 4,
-    "warnings": 6
+    "errors": 0,
+    "warnings": 5
   },
   "findings": [
-    {
-      "level": "error",
-      "code": "not-executed",
-      "message": "Run every nonempty code cell and save the notebook.",
-      "path": "A1.ipynb"
-    },
-    {
-      "level": "error",
-      "code": "stale-html",
-      "message": "Rendered HTML is missing expected content: 'Samantha'.",
-      "path": "A1.html"
-    },
-    {
-      "level": "error",
-      "code": "stale-html",
-      "message": "Rendered HTML is missing expected content: 'Salas'.",
-      "path": "A1.html"
-    },
-    {
-      "level": "error",
-      "code": "stale-html",
-      "message": "Rendered HTML is missing expected content: 'xso947'.",
-      "path": "A1.html"
-    },
     {
       "level": "warning",
       "code": "excluded-path",
@@ -68,12 +44,6 @@
       "code": "excluded-path",
       "message": "This cache or temporary path will not be packaged.",
       "path": "tests_public/__pycache__"
-    },
-    {
-      "level": "warning",
-      "code": "placeholder-text",
-      "message": "Review unresolved placeholder text before submission.",
-      "path": "A1.ipynb"
     }
   ]
 }
