@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inside student_code.py — A2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<style>
+:root{
+  --ground:#EDEFF2; --surface:#FBFCFD; --surface-2:#E3E7EC; --sunken:#F4F6F9;
+  --ink:#151A21; --ink-2:#39424D; --muted:#5C6774; --line:#CAD1D9; --line-soft:#DEE3E9;
+  --accent:#B5195B; --accent-ink:#8E1147; --accent-wash:#F7E5ED;
+  --teal:#0E7480; --teal-wash:#E0F0F1;
+  --ch-r:#C93F31; --ch-g:#2C8446; --ch-b:#3260C0;
+  --tok-kw:#9B1552; --tok-str:#0E6B60; --tok-num:#8A5A00; --tok-fn:#1E2833; --tok-builtin:#2F5FB3;
+  --shadow:0 1px 2px rgba(21,26,33,.06), 0 8px 24px -18px rgba(21,26,33,.4);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1318; --surface:#161C23; --surface-2:#1F2831; --sunken:#12181F;
+    --ink:#E7EBF0; --ink-2:#C3CBD4; --muted:#8C97A4; --line:#2B343E; --line-soft:#222B34;
+    --accent:#FF6FA5; --accent-ink:#FF8FBA; --accent-wash:#331021;
+    --teal:#4FCBBE; --teal-wash:#0E2A2B;
+    --ch-r:#EE7263; --ch-g:#5FC97A; --ch-b:#7BA2F2;
+    --tok-kw:#FF7FB0; --tok-str:#6FD3C4; --tok-num:#E0A458; --tok-fn:#E7EBF0; --tok-builtin:#8DAFF7;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1318; --surface:#161C23; --surface-2:#1F2831; --sunken:#12181F;
+  --ink:#E7EBF0; --ink-2:#C3CBD4; --muted:#8C97A4; --line:#2B343E; --line-soft:#222B34;
+  --accent:#FF6FA5; --accent-ink:#FF8FBA; --accent-wash:#331021;
+  --teal:#4FCBBE; --teal-wash:#0E2A2B;
+  --ch-r:#EE7263; --ch-g:#5FC97A; --ch-b:#7BA2F2;
+  --tok-kw:#FF7FB0; --tok-str:#6FD3C4; --tok-num:#E0A458; --tok-fn:#E7EBF0; --tok-builtin:#8DAFF7;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground); color:var(--ink);
+  font-family:"Newsreader", Georgia, "Times New Roman", serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px 96px}
+h1,h2,h3,.disp{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; text-wrap:balance}
+code,kbd,pre,.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+a{color:var(--accent-ink); text-underline-offset:3px}
+
+/* ---------- masthead ---------- */
+.mast{padding:64px 0 40px; border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"JetBrains Mono",monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block}
+h1{
+  margin:18px 0 0; font-size:clamp(38px,7vw,72px); line-height:.98;
+  font-weight:800; letter-spacing:-.028em;
+}
+h1 .file{color:var(--accent); font-family:"JetBrains Mono",monospace; font-size:.62em; letter-spacing:-.02em; font-weight:600}
+.deck{
+  margin:20px 0 0; max-width:63ch; font-size:20px; line-height:1.5;
+  color:var(--ink-2); font-weight:300;
+}
+.stats{display:flex; flex-wrap:wrap; gap:0; margin-top:34px; border:1px solid var(--line); border-radius:3px; background:var(--surface); overflow:hidden}
+.stat{flex:1 1 150px; padding:14px 18px; border-right:1px solid var(--line-soft)}
+.stat:last-child{border-right:0}
+.stat b{display:block; font-family:"Bricolage Grotesque",sans-serif; font-size:26px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.stat span{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.stat.pass b{color:var(--teal)}
+
+/* ---------- invariants ---------- */
+.invariants{margin:56px 0 0}
+.sec-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px}
+.sec-num{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--accent); letter-spacing:.1em}
+h2{margin:0; font-size:clamp(26px,3.4vw,34px); font-weight:700; letter-spacing:-.02em}
+.sec-sub{max-width:62ch; color:var(--muted); margin:8px 0 26px; font-size:17px}
+.inv-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px}
+.inv{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:18px 18px 20px; box-shadow:var(--shadow)}
+.inv h3{margin:0 0 8px; font-size:16px; font-weight:700; letter-spacing:-.01em}
+.inv p{margin:0; font-size:15.5px; color:var(--ink-2); line-height:1.55}
+.inv .tag{font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:10px}
+
+/* ---------- annotated source ---------- */
+.part{margin:72px 0 0; padding-top:8px}
+.pair{display:grid; gap:20px; margin-top:24px; align-items:start}
+@media (min-width:940px){ .pair{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr); gap:32px} }
+.srcline{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 8px; display:flex; align-items:center; gap:8px;
+}
+.srcline::before{content:""; width:14px; height:1px; background:var(--accent); flex:none}
+pre{
+  margin:0; background:var(--sunken); border:1px solid var(--line-soft); border-radius:3px;
+  padding:16px 18px; overflow-x:auto; font-size:13.2px; line-height:1.62;
+}
+pre code{background:none; padding:0; font-size:inherit}
+.note p{margin:0 0 14px; color:var(--ink-2)}
+.note p:last-child{margin-bottom:0}
+.note strong{color:var(--ink); font-weight:600}
+.note code, p code, li code, td code{
+  background:var(--surface-2); border-radius:2px; padding:1px 5px; font-size:.86em; color:var(--ink);
+}
+.why{
+  border-left:2px solid var(--accent); padding:2px 0 2px 16px; margin:16px 0 0;
+}
+.why b{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:4px}
+.why p{margin:0; font-size:16px}
+
+/* ---------- diagrams ---------- */
+figure{margin:26px 0 0; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 20px 14px; box-shadow:var(--shadow)}
+figure svg{display:block; width:100%; height:auto}
+figcaption{margin-top:12px; font-size:14.5px; color:var(--muted); line-height:1.5}
+.svg-label{font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.06em; fill:var(--muted)}
+.svg-strong{font-family:"JetBrains Mono",monospace; font-size:10px; fill:var(--ink); letter-spacing:.04em}
+
+/* ---------- channel chips ---------- */
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin:16px 0 0}
+.chip{
+  font-family:"JetBrains Mono",monospace; font-size:11.5px; padding:4px 10px; border-radius:2px;
+  border:1px solid currentColor; background:var(--surface);
+}
+.chip.r{color:var(--ch-r)} .chip.g{color:var(--ch-g)} .chip.b{color:var(--ch-b)}
+
+/* ---------- table ---------- */
+.tablewrap{overflow-x:auto; margin-top:22px; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:620px; font-size:15px}
+th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--line-soft); vertical-align:top}
+th{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); font-weight:400; background:var(--sunken);
+}
+tr:last-child td{border-bottom:0}
+td.fn{font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--accent-ink); white-space:nowrap}
+
+/* ---------- edges ---------- */
+.edges{display:grid; gap:0; margin-top:24px; border:1px solid var(--line); border-radius:3px; background:var(--surface); overflow:hidden}
+.edge{display:grid; gap:4px 18px; padding:18px 20px; border-bottom:1px solid var(--line-soft)}
+@media (min-width:760px){ .edge{grid-template-columns:210px minmax(0,1fr)} }
+.edge:last-child{border-bottom:0}
+.edge h3{margin:0; font-size:14px; font-weight:700; letter-spacing:-.01em}
+.edge h3 span{display:block; font-family:"JetBrains Mono",monospace; font-weight:400; font-size:11px; color:var(--muted); margin-top:4px; letter-spacing:0}
+.edge p{margin:0; font-size:15.5px; color:var(--ink-2)}
+
+/* ---------- verify ---------- */
+.verify{margin-top:72px; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:28px; box-shadow:var(--shadow)}
+.verify h2{font-size:24px}
+.term{
+  margin-top:18px; background:var(--sunken); border:1px solid var(--line-soft); border-radius:3px;
+  padding:16px 18px; font-family:"JetBrains Mono",monospace; font-size:13px; overflow-x:auto; line-height:1.7;
+}
+.term .prompt{color:var(--accent)}
+.term .ok{color:var(--teal)}
+footer{margin-top:56px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:14px}
+
+/* ---------- syntax ---------- */
+.hljs-keyword,.hljs-literal{color:var(--tok-kw)}
+.hljs-string{color:var(--tok-str)}
+.hljs-number{color:var(--tok-num)}
+.hljs-comment{color:var(--muted); font-style:italic}
+.hljs-built_in,.hljs-type{color:var(--tok-builtin)}
+.hljs-title,.hljs-title.function_,.hljs-title.class_{color:var(--tok-fn); font-weight:600}
+.hljs-params{color:var(--ink-2)}
+.hljs-attr{color:var(--ink-2)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){ .inv,.edge{transition:none} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="eyebrow">
+    <span class="dot"></span>CS 5243 · Assignment 2<span>/</span>A2-2026.1<span>/</span>Code walkthrough
+  </div>
+  <h1>Inside <span class="file">student_code.py</span></h1>
+  <p class="deck">Thirteen graded functions that filter, corrupt, restore, re-tone, and decompose an image — and put it back together to one float32 ulp. Here is what each one does, and why it does it that way.</p>
+
+  <div class="stats">
+    <div class="stat"><b>13</b><span>graded functions</span></div>
+    <div class="stat"><b>8</b><span>helpers</span></div>
+    <div class="stat"><b>286</b><span>lines</span></div>
+    <div class="stat"><b>2</b><span>dependencies — numpy, cv2</span></div>
+    <div class="stat pass"><b>6 / 6</b><span>public tests pass</span></div>
+  </div>
+</header>
+
+<section class="invariants">
+  <div class="sec-head"><span class="sec-num">CROSS-CUTTING</span><h2>Four rules the whole file obeys</h2></div>
+  <p class="sec-sub">Every function is a variation on the same commitments. Once you see them, the file stops being thirteen separate problems.</p>
+  <div class="inv-grid">
+    <div class="inv">
+      <span class="tag">Rule 01</span>
+      <h3>float32 in, float32 out, never the caller's array</h3>
+      <p><code>_check_image</code> converts every input to a fresh <code>float32</code> array up front. Every return path is a new allocation or an explicit <code>.copy()</code>. Nothing is ever written through to the image the caller passed.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 02</span>
+      <h3>Validate with <code>not (x &gt; 0)</code>, not <code>x &lt;= 0</code></h3>
+      <p>The negated-positive form also rejects <code>NaN</code>. Odd sizes, positive sigmas, probabilities in <code>[0,1]</code>, percentile order, positive level counts — all checked before anything is allocated, all raising <code>ValueError</code>.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 03</span>
+      <h3>Loop over taps, never over pixels</h3>
+      <p>Convolution and median both walk the <em>kernel</em> offsets and apply each one to a whole shifted slice of the padded image. The channel axis rides along in the slice, so 2-D and HxWxC share one code path.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 04</span>
+      <h3>Shapes are recorded, not recomputed</h3>
+      <p>Ceiling-halving is not invertible by doubling (33 · 2 ≠ 65). Every pyramid level carries its own shape, and <code>expand_image</code> is always told exactly what to produce.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Three helpers everything else leans on</h2></div>
+  <p class="sec-sub">Padding, coercion, and the odd-size check — written once, used by six functions.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:11–36 · _pad_spatial, _check_image, _check_odd_size</p>
+      <pre><code class="language-python">_PAD_MODES = {"reflect": "reflect", "edge": "edge", "constant": "constant"}
+
+def _pad_spatial(image, radius, border_mode):
+    if border_mode not in _PAD_MODES: raise ValueError(...)
+    pad = [(radius, radius), (radius, radius)] + [(0, 0)] * (image.ndim - 2)
+    if border_mode == "constant":
+        return np.pad(image, pad, mode="constant", constant_values=0)
+    return np.pad(image, pad, mode=_PAD_MODES[border_mode])
+
+def _check_image(image):
+    a = np.asarray(image, dtype=np.float32)
+    if a.ndim not in (2, 3): raise ValueError(...)
+    return a
+
+def _check_odd_size(size, name="kernel size"):
+    if not isinstance(size, (int, np.integer)) or isinstance(size, bool):
+        raise ValueError(...)
+    if size &lt;= 0 or size % 2 == 0: raise ValueError(...)
+    return int(size)</code></pre>
+    </div>
+    <div class="note">
+      <p><code>_pad_spatial</code> pads <strong>only the first two axes</strong>. The <code>[(0, 0)] * (ndim - 2)</code> term appends a no-op pad for the channel axis when there is one, which is the entire reason the filters below never need a per-channel branch.</p>
+      <p>The three names map onto the README's contract exactly: NumPy <code>reflect</code> is OpenCV <code>BORDER_REFLECT_101</code> (mirror <em>without</em> repeating the edge pixel), <code>edge</code> is <code>BORDER_REPLICATE</code>, <code>constant</code> is zero. The notebook uses the same mapping when it calls <code>cv2.filter2D</code>, which is what makes the reference errors land at 1e-7 instead of 0.1 at the frame.</p>
+      <div class="why">
+        <b>Why the bool check</b>
+        <p><code>True</code> is an <code>int</code> in Python, and <code>True % 2 == 1</code>. Without <code>isinstance(size, bool)</code>, <code>gaussian_kernel(True, 1.0)</code> would quietly build a 1×1 kernel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">02</span><h2>True convolution, and a kernel to feed it</h2></div>
+  <p class="sec-sub">One reversed index is the difference between convolution and correlation. The asymmetric-kernel experiment exists to prove it is there.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:39–69 · convolve2d_manual</p>
+      <pre><code class="language-python">img = _check_image(image)
+k = np.asarray(kernel, dtype=np.float32)
+kh, kw = k.shape                       # both validated odd
+rh, rw = kh // 2, kw // 2
+radius = max(rh, rw)
+padded = _pad_spatial(img, radius, border_mode)
+H, W = img.shape[:2]
+flipped = k[::-1, ::-1]                # true convolution
+out = np.zeros(img.shape, dtype=np.float32)
+for i in range(kh):
+    for j in range(kw):
+        w = flipped[i, j]
+        if w == 0:
+            continue
+        y0 = radius - rh + i
+        x0 = radius - rw + j
+        out += w * padded[y0:y0 + H, x0:x0 + W]
+return out.astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p>Convolution is defined with the kernel rotated 180°: <code>out[y,x] = Σ k[i,j] · img[y−i+r, x−j+r]</code>. Correlation lays it down as-is. <code>k[::-1, ::-1]</code> is the rotation; after it, each tap of <code>flipped</code> multiplies a whole <code>H×W</code> slice of the padded image shifted by that tap's offset, and the slices are summed.</p>
+      <p><strong>The loop runs <code>k²</code> times, not <code>H·W</code> times.</strong> A 25×25 kernel on the 255×383 test pattern is 625 vectorized multiply-adds — about 10 ms — with no call into <code>cv2.filter2D</code> or <code>scipy.signal</code>.</p>
+      <p><code>y0 = radius − rh + i</code> handles non-square kernels: the pad is by the larger half-size, and the smaller axis starts partway in.</p>
+      <div class="why">
+        <b>The evidence</b>
+        <p>Against <code>cv2.filter2D</code> on the <em>flipped</em> kernel: 6e-8. Against <code>filter2D</code> on the unflipped kernel: 0.51. Same code, same border, one index reversed. A symmetric Gaussian could never expose the difference.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:72–87 · gaussian_kernel, gaussian_support</p>
+      <pre><code class="language-python">def gaussian_kernel(size, sigma):
+    size = _check_odd_size(size, "size")
+    if not (sigma &gt; 0): raise ValueError(...)
+    r = size // 2
+    ax = np.arange(-r, r + 1, dtype=np.float64)
+    g1 = np.exp(-(ax ** 2) / (2.0 * float(sigma) ** 2))
+    k = np.outer(g1, g1)
+    k /= k.sum()
+    return k.astype(np.float32)
+
+def gaussian_support(sigma):
+    return max(3, 2 * int(math.ceil(3.0 * sigma)) + 1)</code></pre>
+    </div>
+    <div class="note">
+      <p>A 2-D Gaussian is separable — <code>G(x,y) = g(x)·g(y)</code> — so <code>np.outer</code> of one 1-D profile is the whole kernel, and it is symmetric by construction (<code>k == k[::-1, ::-1]</code>, which the public test asserts).</p>
+      <p>Normalizing by <code>k.sum()</code> rather than the analytic <code>2πσ²</code> makes the <em>truncated</em> kernel sum to exactly one, so a flat region stays flat. Built in <code>float64</code>, cast once at the end.</p>
+      <p><code>gaussian_support</code> is the stated support convention: ±3σ (99.7 % of the mass), forced odd, never below 3. σ = 1.5 → 11, σ = 2 → 13, σ = 3 → 19. Exposing it lets the notebook write the size into every metrics row.</p>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:90–103 · sharpen_image</p>
+      <pre><code class="language-python">if not (amount &gt;= 0): raise ValueError(...)
+if not (sigma &gt; 0):   raise ValueError(...)
+img = _check_image(image)
+blur = convolve2d_manual(img, gaussian_kernel(gaussian_support(sigma), sigma), "reflect")
+return (img + np.float32(amount) * (img - blur)).astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p>Unsharp masking, literally: <code>img − blur</code> is the high-pass detail; add it back scaled by <code>amount</code>. <code>amount = 0</code> is the identity to the bit, and the output is exactly linear in <code>amount</code> — the notebook checks <code>sharpen(2a) − x == 2·(sharpen(a) − x)</code> to 1.8e-7.</p>
+      <p><strong>No clipping.</strong> Overshoot past <code>[0, 1]</code> is the halo, and it is evidence — Task 7's first failure is this function at <code>amount = 6</code>, max value 3.7.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Two noise models, one generator</h2></div>
+  <p class="sec-sub">Every random number comes from the <code>Generator</code> the caller supplies. Same seed, same image, any machine.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:106–133 · add_gaussian_noise, add_impulse_noise</p>
+      <pre><code class="language-python">def add_gaussian_noise(image, sigma, rng):
+    if not (sigma &gt;= 0): raise ValueError(...)
+    img = _check_image(image)
+    noise = rng.normal(0.0, float(sigma), size=img.shape).astype(np.float32)
+    return np.clip(img + noise, 0.0, 1.0).astype(np.float32)
+
+def add_impulse_noise(image, probability, rng):
+    if not (0.0 &lt;= probability &lt;= 1.0): raise ValueError(...)
+    img = _check_image(image)
+    H, W = img.shape[:2]
+    selected = rng.random((H, W)) &lt; probability
+    salt = rng.random((H, W)) &lt; 0.5
+    values = np.where(salt, np.float32(1.0), np.float32(0.0))
+    out = img.copy()
+    if img.ndim == 3:
+        out[selected] = values[selected][:, None]
+    else:
+        out[selected] = values[selected]
+    return out.astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p>Gaussian noise is drawn with the image's <em>full</em> shape — independent per channel, the usual sensor model — then clipped, because a normalized image cannot hold −0.05.</p>
+      <p>Impulse noise draws two <code>(H, W)</code> arrays, <strong>not</strong> <code>(H, W, C)</code>: selection is per pixel, and a selected colour pixel gets the same value on every channel. <code>values[selected][:, None]</code> is the broadcast that copies one value across the <code>(n, C)</code> slice.</p>
+      <div class="why">
+        <b>Why two draws</b>
+        <p><code>random() &lt; p</code> selects each pixel independently with probability exactly <code>p</code>; a second <code>random() &lt; 0.5</code> chooses salt or pepper with equal odds. At <code>p = 1.0</code> every pixel is hit, which is the public test's <code>{0.0, 1.0}</code> check.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:136–150 · median_filter_manual</p>
+      <pre><code class="language-python">k = _check_odd_size(kernel_size, "kernel_size")
+img = _check_image(image)
+r = k // 2
+padded = _pad_spatial(img, r, border_mode)
+H, W = img.shape[:2]
+stack = np.empty((k * k,) + img.shape, dtype=np.float32)
+idx = 0
+for i in range(k):
+    for j in range(k):
+        stack[idx] = padded[i:i + H, j:j + W]
+        idx += 1
+return np.median(stack, axis=0).astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p>The same tap-walking loop as the convolution, but instead of weighting and summing the shifted slices it <strong>stacks</strong> them on a new leading axis. <code>stack[:, y, x]</code> is then pixel <code>(y, x)</code>'s whole neighbourhood, and <code>np.median(axis=0)</code> takes the middle value of each.</p>
+      <p><code>np.median</code> is a reduction, not a filter — the windowing, padding, and border rule are all here. Memory is <code>k²·H·W·4</code> bytes: ~19 MB for <code>k = 7</code> on the test pattern.</p>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 640 210" role="img" aria-label="Tap-walking: a 3x3 kernel produces nine shifted slices of the padded image, which are either weighted and summed (convolution) or stacked and reduced by median.">
+      <rect x="20" y="30" width="120" height="120" fill="var(--sunken)" stroke="var(--line)"/>
+      <rect x="40" y="50" width="80" height="80" fill="none" stroke="var(--ink)" stroke-width="1.2"/>
+      <text x="22" y="22" class="svg-label">padded image (H+2r × W+2r)</text>
+      <text x="46" y="94" class="svg-strong">H × W</text>
+      <g fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 2">
+        <rect x="20" y="30" width="80" height="80"/>
+        <rect x="60" y="70" width="80" height="80"/>
+      </g>
+      <text x="22" y="164" class="svg-label">slice (i, j) = padded[i : i+H, j : j+W]</text>
+      <line x1="150" y1="90" x2="205" y2="90" stroke="var(--muted)" marker-end="url(#a)"/>
+      <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+      <g>
+        <rect x="215" y="40" width="70" height="50" fill="var(--ch-b)" opacity=".35"/>
+        <rect x="223" y="48" width="70" height="50" fill="var(--ch-b)" opacity=".35"/>
+        <rect x="231" y="56" width="70" height="50" fill="var(--ch-b)" opacity=".35"/>
+        <text x="215" y="130" class="svg-label">k² shifted slices</text>
+        <text x="215" y="144" class="svg-label">(channel axis rides along)</text>
+      </g>
+      <line x1="320" y1="70" x2="375" y2="50" stroke="var(--muted)" marker-end="url(#a)"/>
+      <line x1="320" y1="100" x2="375" y2="140" stroke="var(--muted)" marker-end="url(#a)"/>
+      <text x="385" y="46" class="svg-strong">Σ w[i,j] · slice</text>
+      <text x="385" y="62" class="svg-label">convolve2d_manual — w from k[::-1, ::-1]</text>
+      <text x="385" y="146" class="svg-strong">median(stack, axis=0)</text>
+      <text x="385" y="162" class="svg-label">median_filter_manual — stack on a new axis</text>
+    </svg>
+    <figcaption>Both manual filters are the same loop over kernel offsets. Each offset selects one full-size slice of the padded image; convolution weights and accumulates the slices, the median stacks them and reduces. Neither ever loops over pixels.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Moving tones: stretch, equalize, gamma</h2></div>
+  <p class="sec-sub">Three monotone remaps with three different costs — clipping, noise amplification, colour shift.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:153–166 · normalize_contrast</p>
+      <pre><code class="language-python">if not (0.0 &lt;= low_percentile &lt; high_percentile &lt;= 100.0): raise ValueError(...)
+img = _check_image(image)
+lo, hi = np.percentile(img.astype(np.float64), [low_percentile, high_percentile])
+if hi == lo: raise ValueError(...)
+out = (img.astype(np.float64) - lo) / (hi - lo)
+return np.clip(out, 0.0, 1.0).astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p><code>np.percentile</code> over the <strong>whole array</strong> — every pixel, every channel, together. One <code>lo</code>, one <code>hi</code>, one affine map for all channels. A per-channel stretch would be a colour cast; this preserves channel ratios.</p>
+      <p>The chained comparison is the README's <code>0 ≤ low &lt; high ≤ 100</code> in one line. <code>hi == lo</code> — a flat image, or two percentiles landing on the same quantized value — would divide by zero, so it raises.</p>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:169–186 · histogram_equalize_gray</p>
+      <pre><code class="language-python">a = np.asarray(image)
+if a.ndim != 2 or a.dtype != np.uint8: raise ValueError(...)
+hist = np.bincount(a.ravel(), minlength=256).astype(np.float64)
+cdf = np.cumsum(hist)
+cdf_min = cdf[np.nonzero(cdf)[0][0]]
+total = cdf[-1]
+if total == cdf_min:
+    return a.copy()
+lut = np.rint((cdf - cdf_min) / (total - cdf_min) * 255.0)
+lut = np.clip(lut, 0, 255).astype(np.uint8)
+return lut[a]</code></pre>
+    </div>
+    <div class="note">
+      <p><code>np.bincount(minlength=256)</code> is the exact 256-bin histogram of a <code>uint8</code> image with no binning to get wrong. The CDF is its running sum.</p>
+      <p>The classic map <code>T(v) = rint((cdf(v) − cdf_min) / (N − cdf_min) · 255)</code>: subtracting the <strong>first nonzero</strong> CDF value pins the darkest occupied level to 0 and the brightest to 255, so the full range is used. <code>np.rint</code> is round-half-to-even, as the README requires.</p>
+      <p>A single grey level gives <code>total == cdf_min</code> and a 0/0; the contract says return the image unchanged, so it does — as a copy.</p>
+      <div class="why">
+        <b>lut[a]</b>
+        <p>Build the 256-entry table once, then apply it to every pixel with one fancy-index. No per-pixel loop, and the same LUT idea the notebook uses to equalize luma and then scale colour channels by the resulting gain.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:189–197 · apply_gamma</p>
+      <pre><code class="language-python">if not (gamma &gt; 0): raise ValueError(...)
+img = np.clip(_check_image(image), 0.0, 1.0)
+return np.power(img, np.float32(gamma)).astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p>Clip first, then <code>x^γ</code>. On <code>[0, 1]</code> the power stays in <code>[0, 1]</code> for any positive γ, so nothing needs clipping afterwards. γ &lt; 1 lifts every value toward 1 (brightens), γ &gt; 1 pushes toward 0 (darkens), γ = 1 is the identity — the three cases the public test checks.</p>
+      <p>Measured on <code>exposure_under.png</code>: γ = 0.5 lifts the luma mean from 0.15 to 0.37 with zero clipping and only 1.25× noise amplification — the gentlest of the three tone methods on both counts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Pyramids: reduce, expand, subtract, add back</h2></div>
+  <p class="sec-sub"><code>cv2.pyrDown</code> and <code>cv2.pyrUp</code> are the approved one-step primitives. Everything that makes them a pyramid is here.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:202–222 · _restore_channels, reduce_image, expand_image</p>
+      <pre><code class="language-python">def reduce_image(image):
+    img = _check_image(image)
+    H, W = img.shape[:2]
+    out = cv2.pyrDown(img, dstsize=((W + 1) // 2, (H + 1) // 2))
+    return _restore_channels(out, img).astype(np.float32)
+
+def expand_image(image, target_shape):
+    img = _check_image(image)
+    H, W = int(target_shape[0]), int(target_shape[1])
+    out = cv2.pyrUp(img, dstsize=(W, H))
+    return _restore_channels(out, img).astype(np.float32)</code></pre>
+    </div>
+    <div class="note">
+      <p>Both pass <code>dstsize</code> explicitly. <code>pyrDown</code>'s default already ceiling-halves, but writing <code>(W + 1) // 2</code> makes the contract visible. <code>pyrUp</code> has no way to guess 65 from 33, so the target shape is mandatory — it accepts anything within ±2 of double, which is exactly what ceiling-halving needs.</p>
+      <p>OpenCV's <code>Size</code> is <code>(width, height)</code>, NumPy's <code>shape</code> is <code>(height, width)</code>. The swap happens in these two helpers and nowhere else.</p>
+      <p><code>_restore_channels</code> puts back a trailing singleton channel axis if OpenCV dropped one (<code>(H, W, 1)</code> in → <code>(H, W)</code> out). RGB and grayscale never hit it.</p>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:231–260 · gaussian_pyramid, laplacian_pyramid, reconstruct_laplacian_pyramid</p>
+      <pre><code class="language-python">def gaussian_pyramid(image, levels):
+    levels = _check_levels(levels)
+    current = _check_image(image)
+    pyramid = [current]
+    for _ in range(levels - 1):
+        current = reduce_image(current)
+        pyramid.append(current)
+    return pyramid
+
+def laplacian_pyramid(image, levels):
+    gauss = gaussian_pyramid(image, levels)
+    pyramid = []
+    for finer, coarser in zip(gauss[:-1], gauss[1:]):
+        pyramid.append((finer - expand_image(coarser, finer.shape)).astype(np.float32))
+    pyramid.append(gauss[-1])
+    return pyramid
+
+def reconstruct_laplacian_pyramid(pyramid):
+    current = np.asarray(pyramid[-1], dtype=np.float32)
+    for level in reversed(pyramid[:-1]):
+        current = (expand_image(current, level.shape) + level).astype(np.float32)
+    return current</code></pre>
+    </div>
+    <div class="note">
+      <p>Exactly <code>levels</code> arrays, finest first. <code>zip(gauss[:-1], gauss[1:])</code> pairs each level with the next-coarser one; <code>L_i = G_i − expand(G_{i+1})</code> is the band-pass residual, and the coarsest Gaussian goes on the end unchanged — the Burt–Adelson layout.</p>
+      <p><strong><code>expand_image(coarser, finer.shape)</code> is where odd sizes are handled.</strong> The expansion is told to produce <code>finer</code>'s exact shape, so the subtraction always lines up; the reconstruction reads each level's shape back the same way. No arithmetic on sizes anywhere.</p>
+      <div class="why">
+        <b>The evidence</b>
+        <p>Max reconstruction error 1.5e-8 on <code>color_scene.png</code> (257×385×3) and 6e-8 on the 255×383 grayscale pattern, for levels 2 through 6. That is one float32 ulp at 1.0 — the decomposition is exactly invertible at every odd/even transition.</p>
+      </div>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 640 220" role="img" aria-label="Laplacian pyramid: Gaussian levels G0..G3 halve in size; each Laplacian level is Gi minus expand(Gi+1); the coarsest Gaussian is stored as the last level; reconstruction runs the same chain backwards.">
+      <g>
+        <rect x="20" y="20" width="128" height="86" fill="var(--ch-b)" opacity=".3"/>
+        <rect x="168" y="20" width="64" height="43" fill="var(--ch-b)" opacity=".3"/>
+        <rect x="252" y="20" width="32" height="22" fill="var(--ch-b)" opacity=".3"/>
+        <rect x="304" y="20" width="16" height="11" fill="var(--ch-b)" opacity=".3"/>
+        <text x="20" y="122" class="svg-strong">G0 257×385</text>
+        <text x="168" y="122" class="svg-strong">G1 129×193</text>
+        <text x="252" y="122" class="svg-strong">G2 65×97</text>
+        <text x="304" y="122" class="svg-strong">G3 33×49</text>
+        <text x="150" y="46" class="svg-label">pyrDown</text>
+        <text x="234" y="36" class="svg-label">pyrDown</text>
+      </g>
+      <g>
+        <rect x="20" y="140" width="128" height="50" fill="var(--accent)" opacity=".28"/>
+        <rect x="168" y="140" width="64" height="50" fill="var(--accent)" opacity=".28"/>
+        <rect x="252" y="140" width="32" height="50" fill="var(--accent)" opacity=".28"/>
+        <rect x="304" y="140" width="16" height="50" fill="var(--ch-b)" opacity=".3"/>
+        <text x="24" y="160" class="svg-strong">L0 = G0 − expand(G1)</text>
+        <text x="24" y="176" class="svg-label">→ target shape 257×385</text>
+        <text x="172" y="160" class="svg-strong">L1</text>
+        <text x="256" y="160" class="svg-strong">L2</text>
+        <text x="304" y="204" class="svg-label">L3 = G3</text>
+        <text x="20" y="208" class="svg-label">band-pass, signed, ~0.035 RMS · stored finest first</text>
+      </g>
+      <g>
+        <text x="360" y="40" class="svg-strong">reconstruct</text>
+        <text x="360" y="58" class="svg-label">cur = L3</text>
+        <text x="360" y="74" class="svg-label">cur = expand(cur, L2.shape) + L2</text>
+        <text x="360" y="90" class="svg-label">cur = expand(cur, L1.shape) + L1</text>
+        <text x="360" y="106" class="svg-label">cur = expand(cur, L0.shape) + L0</text>
+        <text x="360" y="130" class="svg-strong">max |cur − G0| = 1.5e-8</text>
+        <text x="360" y="160" class="svg-strong">without L0</text>
+        <text x="360" y="176" class="svg-label">max err 0.46, PSNR 28.8 dB, SSIM 0.94</text>
+        <text x="360" y="192" class="svg-label">visually plausible ≠ correct</text>
+      </g>
+    </svg>
+    <figcaption>Four Gaussian levels, ceiling-halved. Three band-pass Laplacian levels plus the coarsest Gaussian. Reconstruction is the same expand-and-add chain run backwards, reading each target shape off the pyramid itself. Zeroing the finest band still gives a picture that looks right — which is why the max error, not the PSNR, is the correctness check.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Blending per band</h2></div>
+  <p class="sec-sub">Three pyramids, one loop, one reconstruction. The mask gets a Gaussian pyramid, not a Laplacian one.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:263–286 · laplacian_pyramid_blend</p>
+      <pre><code class="language-python">a = _check_image(image_a)
+b = _check_image(image_b)
+m = np.asarray(mask, dtype=np.float32)
+if a.shape != b.shape:            raise ValueError(...)
+if m.shape[:2] != a.shape[:2]:    raise ValueError(...)
+if m.ndim == 3 and m.shape[2] == 1: m = m[..., 0]
+if m.ndim != 2:                   raise ValueError(...)
+
+lap_a   = laplacian_pyramid(a, levels)
+lap_b   = laplacian_pyramid(b, levels)
+gauss_m = gaussian_pyramid(m, levels)
+blended = []
+for la, lb, gm in zip(lap_a, lap_b, gauss_m):
+    weight = gm[..., None] if la.ndim == 3 else gm
+    blended.append(((1.0 - weight) * la + weight * lb).astype(np.float32))
+return reconstruct_laplacian_pyramid(blended)</code></pre>
+    </div>
+    <div class="note">
+      <p>The same <code>(1 − w)·a + w·b</code> as direct blending, applied <strong>at every level</strong> with <code>w</code> taken from the mask's Gaussian pyramid. Because the mask is blurred and halved along with the images, coarse bands (colour) cross-fade over a wide transition and fine bands (texture) over a narrow one — the transition width scales with content automatically.</p>
+      <p><code>gm[..., None]</code> gives the <code>(h, w)</code> mask level a channel axis so it broadcasts against an <code>(h, w, 3)</code> image level; the conditional keeps grayscale blends working.</p>
+      <p>"Mask 0 selects <code>image_a</code>" falls out algebraically: a zero mask has a zero Gaussian pyramid, <code>blended == lap_a</code>, and reconstruction returns <code>a</code> to 1e-5 (the public test).</p>
+      <div class="why">
+        <b>Why the mask gets a Gaussian pyramid</b>
+        <p>The mask is a weight, not a signal. Each level needs the full low-passed weight; a Laplacian mask level is near zero almost everywhere and would select neither image.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>pair · mask</th><th>direct</th><th>L = 2</th><th>L = 3</th><th>L = 5</th><th>L = 7</th></tr></thead>
+      <tbody>
+        <tr><td class="fn">blend3 · hard vertical</td><td>2.76</td><td>2.39</td><td>1.91</td><td>1.15</td><td>1.03</td></tr>
+        <tr><td class="fn">blend4 · hard circular</td><td>2.65</td><td>2.12</td><td>1.72</td><td>1.07</td><td>1.00</td></tr>
+        <tr><td class="fn">blend2 · soft diagonal</td><td>1.08</td><td>1.08</td><td>1.08</td><td>1.06</td><td>1.05</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin:12px 0 0; color:var(--muted); font-size:15px">Seam-band gradient energy relative to the sources' own energy in the same band (1.0 = no added edge). <code>levels = 1</code> reproduces the direct-blend value exactly; hard masks gain the most, the pre-feathered diagonal mask barely changes.</p>
+</section>
+
+<!-- ============ 7 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">07</span><h2>What each function is answerable for</h2></div>
+  <p class="sec-sub">The thirteen graded names, the contract each one meets, and the experiment that leans on it.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>function</th><th>contract it enforces</th><th>used by</th></tr></thead>
+      <tbody>
+        <tr><td class="fn">convolve2d_manual</td><td>True convolution (kernel reversed), three border modes, 2-D and HxWxC, no library conv</td><td>Tasks 1, 2, 3, 7, 8</td></tr>
+        <tr><td class="fn">gaussian_kernel</td><td>Odd size, σ &gt; 0, symmetric, non-negative, sums to 1, float32</td><td>Tasks 1, 2, 3, 7, 8</td></tr>
+        <tr><td class="fn">sharpen_image</td><td><code>img + amount·(img − blur)</code>, unclipped, linear in amount, stated support</td><td>Tasks 1, 7</td></tr>
+        <tr><td class="fn">add_gaussian_noise</td><td>σ ≥ 0, generator-only randomness, clipped to [0, 1]</td><td>Task 2</td></tr>
+        <tr><td class="fn">add_impulse_noise</td><td>p ∈ [0, 1], per-pixel selection, same impulse on all channels</td><td>Tasks 2, 7</td></tr>
+        <tr><td class="fn">median_filter_manual</td><td>Odd window, own windowing, three border modes</td><td>Tasks 2, 7</td></tr>
+        <tr><td class="fn">normalize_contrast</td><td>Joint percentiles, one affine map, clip; ValueError on bad or equal bounds</td><td>Task 3</td></tr>
+        <tr><td class="fn">histogram_equalize_gray</td><td>2-D uint8 only, 256 bins, first-nonzero CDF subtraction, np.rint, constant image unchanged</td><td>Task 3</td></tr>
+        <tr><td class="fn">apply_gamma</td><td><code>x^γ</code> on [0, 1], γ &gt; 0, float32</td><td>Task 3</td></tr>
+        <tr><td class="fn">gaussian_pyramid</td><td>Exactly <code>levels</code> arrays, finest first, ceiling-halving</td><td>Tasks 4, 5, 6</td></tr>
+        <tr><td class="fn">laplacian_pyramid</td><td>Band-pass levels + coarsest Gaussian last, odd sizes handled</td><td>Tasks 4, 5, 6</td></tr>
+        <tr><td class="fn">reconstruct_laplacian_pyramid</td><td>Exact inverse to float precision from recorded shapes</td><td>Tasks 4, 5, 6</td></tr>
+        <tr><td class="fn">laplacian_pyramid_blend</td><td>Mask 0 → a, 1 → b, per-level blend with the mask's Gaussian pyramid</td><td>Tasks 5, 6</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ edges ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Sharp edges</h2></div>
+  <p class="sec-sub">Nothing here fails the public tests. These are the places where a future edit could go wrong, or where the code makes a choice worth being able to defend.</p>
+
+  <div class="edges">
+    <div class="edge">
+      <h3>Median memory grows with k²<span>median_filter_manual:144</span></h3>
+      <p>The stacked-slices approach allocates <code>k²·H·W·4</code> bytes. Fine for the assignment's 255×383 images and <code>k ≤ 7</code> (~19 MB); a 4K frame at <code>k = 15</code> would be ~7 GB. A running-histogram median is the fix if that ever matters.</p>
+    </div>
+    <div class="edge">
+      <h3>Sharpening border is fixed to reflect<span>sharpen_image:102</span></h3>
+      <p>The unsharp blur always uses <code>"reflect"</code>; the caller cannot choose. That is a deliberate simplification of the contract, and it is the mode under which edge behaviour at the frame is least distorted — but it is not a parameter, and the docstring does not say so.</p>
+    </div>
+    <div class="edge">
+      <h3>Percentiles of a quantized image are step functions<span>normalize_contrast:164</span></h3>
+      <p>On the 8-bit <code>exposure_under.png</code>, the 1st and 2nd percentiles land on the same value, so <code>normalize_contrast(img, 1, 99)</code> and <code>(img, 2, 98)</code> are bit-identical. Correct behaviour, but a surprise if you expect different percentiles to always give different outputs — and the reason the <code>hi == lo</code> guard exists.</p>
+    </div>
+    <div class="edge">
+      <h3>Blend output is not clipped<span>laplacian_pyramid_blend:284</span></h3>
+      <p>A blend of two [0, 1] images stays in [0, 1] mathematically, but <code>pyrUp</code>/<code>pyrDown</code> rounding can leave values at 1.0000001 or −1e-8. Harmless, and the notebook clips for display — but anything that casts straight to <code>uint8</code> should clip first.</p>
+    </div>
+    <div class="edge">
+      <h3>Mask tolerance is asymmetric<span>laplacian_pyramid_blend:270–274</span></h3>
+      <p>An <code>(H, W, 1)</code> mask is squeezed and accepted; an <code>(H, W, 3)</code> mask is rejected. A per-channel mask is a legitimate thing to want, but the contract says "spatial mask," so the function stays strict rather than guessing which channel to use.</p>
+    </div>
+  </div>
+</section>
+
+<section class="verify">
+  <h2>Check it yourself</h2>
+  <p style="margin:10px 0 0; color:var(--ink-2); max-width:62ch">Run from the workspace folder that holds <code>A2/</code> and <code>common-setup/</code>. The public tests are sanity checks, not a correctness proof — they do not exercise border modes, colour pyramids, hard masks, or the noise contracts beyond determinism.</p>
+  <div class="term">
+<span class="prompt">$</span> conda activate cs5243
+<span class="prompt">$</span> pytest A2/tests_public -q
+......                                                   [100%]
+<span class="ok">6 passed in 0.65s</span>
+  </div>
+  <p style="margin:16px 0 0; color:var(--muted); font-size:15px">Covered: imports and asset hashes, Gaussian kernel properties and asymmetric-kernel convolution, unsharp identity and overshoot, noise determinism and channel agreement, gamma direction and a 3-level odd-size round trip, and the mask-0 / mask-1 blend contracts.</p>
+</section>
+
+<footer>
+  Walkthrough of <code>A2/src/student_code.py</code> — 286 lines, NumPy + OpenCV (pyrDown / pyrUp only). Assignment A2-2026.1, environment 2026.1.
+</footer>
+
+</div>
+
+<script>
+  hljs.highlightAll();
+</script>
+</body>
+</html>

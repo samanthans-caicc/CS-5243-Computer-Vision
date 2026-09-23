@@ -17,7 +17,7 @@ Implement reusable graded functions in `src/student_code.py`. Use the notebook f
 ## Artifact formats
 
 - `experiment_metrics.csv`: cumulative long-form records with `experiment, method, condition, metric, value, units`. Additional useful columns are allowed. Append later finite-valued records without deleting earlier experiments.
-- `pyramid_metrics.json`: `levels` (integer level count), `level_shapes` (list of per-level shapes, finest first, each `[H, W]` or `[H, W, C]`), `reconstruction.max_abs_error`, `reconstruction.mean_abs_error`, and `reconstruction.dtype`. Additional diagnostic keys are allowed.
+- `pyramid_metrics.json`: `levels` (integer level count), `level_shapes` (list of per-level shapes, finest first, each `[H, W]` or `[H, W, C]`), `reconstruction.max_abs_error`, `reconstruction.mean_abs_error`, and `reconstruction.dtype`. Also record `source_image` (the file name the saved pyramid was built from). Additional diagnostic keys are allowed.
 
 ## Mathematical contracts
 
@@ -34,7 +34,7 @@ Implement reusable graded functions in `src/student_code.py`. Use the notebook f
 
 Pyramids contain exactly `levels` float32 arrays in finest-to-coarsest order. Reduction uses Gaussian prefiltering and ceiling-halving, so `(H, W)` becomes `((H + 1) // 2, (W + 1) // 2)`; `cv2.pyrDown` is approved. Expansion must target the recorded finer shape; `cv2.pyrUp` or an equivalent Gaussian expansion is approved. Calling a library routine that constructs an entire pyramid or blend is not allowed. Equivalent documented border behavior and harmless floating-point differences are accepted.
 
-`data/images/` includes five aligned blend pairs so blending experiments are not limited to one mask geometry: `blend_left.png`/`blend_right.png` with `blend_mask.png` (soft vertical seam) or `blend_mask_spot.png` (circular seam), `blend2_left.png`/`blend2_right.png` with `blend2_mask.png` (diagonal seam), and two pairs of real fruit photographs with hard-edged (non-feathered) masks — `blend3_left.png`/`blend3_right.png` with `blend3_mask.png` (hard vertical seam) and `blend4_left.png`/`blend4_right.png` with `blend4_mask.png` (hard circular seam), credited in `data/ATTRIBUTION.md`. The hard real-photo masks make the contrast obvious between the two blending methods: direct blending (splicing) leaves a visible seam that Laplacian pyramid blending visibly smooths. See `metadata/assets.json` for the full grouping.
+`data/images/` includes four aligned blend pairs, one of which ships with two masks, giving five mask geometries so blending experiments are not limited to one seam: `blend_left.png`/`blend_right.png` with `blend_mask.png` (soft vertical seam) or `blend_mask_spot.png` (circular seam), `blend2_left.png`/`blend2_right.png` with `blend2_mask.png` (diagonal seam), and two pairs of real fruit photographs with hard-edged (non-feathered) masks — `blend3_left.png`/`blend3_right.png` with `blend3_mask.png` (hard vertical seam) and `blend4_left.png`/`blend4_right.png` with `blend4_mask.png` (hard circular seam), credited in `data/ATTRIBUTION.md`. The hard real-photo masks make the contrast obvious between the two blending methods: direct blending (splicing) leaves a visible seam that Laplacian pyramid blending visibly smooths. See `metadata/assets.json` for the full grouping.
 
 ## Public tests
 
