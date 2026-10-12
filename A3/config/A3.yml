@@ -1,0 +1,64 @@
+assignment: A3
+title: "Assignment 3: Visual Recognition with Deep Learning"
+assignment_version: A3-2026.1
+environment_version: "2026.1"
+individual: true
+max_file_size_mb: 25
+warn_file_size_mb: 10
+identity:
+  name_component_pattern: "[^\\s]+(?:[ '\\-][^\\s]+)*"
+  abc123_pattern: "[A-Za-z]{3}[0-9]{3}"
+notebook:
+  filename: A3.ipynb
+  html_filename: A3.html
+  executed: true
+  warn_absolute_paths: true
+  required_html_markers: ["Assignment 3", "A3-2026.1", "2026.1"]
+  required_sections: ["0. Student Information", "1. Assignment Overview and Learning Objectives", "2. Environment Verification", "3. Dataset and Problem Setup", "4. Core Implementation", "5. Required Experiments", "6. Results and Analysis", "7. Failure Analysis", "8. Extension", "9. Reflection and Reproducibility", "10. Submission Validation"]
+preflight:
+  required_artifacts:
+    - {pattern: A3.ipynb, label: starter notebook}
+    - {pattern: src/a3_tools.py, label: provided A3 helpers}
+    - {pattern: src/student_code.py, label: student implementation module}
+    - {pattern: tests_public/test_a3_public.py, label: public sanity tests}
+  asset_manifest: A3/data/SHA256SUMS
+  required_functions:
+    path: src/student_code.py
+    names: [build_dataloaders, build_model, freeze_backbone, train_one_epoch, evaluate_model, predict, extract_embeddings, classification_metrics, plot_confusion_matrix, build_external_dataloaders]
+required_artifacts:
+  - {pattern: A3.ipynb, label: executed notebook}
+  - {pattern: A3.html, label: rendered HTML}
+  - {pattern: src/student_code.py, label: student source}
+  - {pattern: outputs/tables/experiment_metrics.csv, label: cumulative metrics}
+  - {pattern: outputs/tables/predictions.csv, label: test predictions}
+  - {pattern: outputs/tables/model_metadata.json, label: model metadata}
+  - {pattern: outputs/figures/training_curves.png, label: training curves}
+  - {pattern: outputs/figures/confusion_matrix.png, label: confusion matrix}
+  - {pattern: outputs/figures/embedding_visualization.png, label: embedding visualization}
+  - {pattern: outputs/figures/augmentation_examples.png, label: augmentation examples}
+  - {pattern: outputs/figures/robustness_results.png, label: robustness figure}
+  - {pattern: outputs/figures/failure_analysis.png, label: failure evidence}
+  - {pattern: outputs/figures/skin_cancer_class_balance.png, label: skin cancer class-imbalance figure}
+  - {pattern: outputs/figures/eurosat_transfer_results.png, label: EuroSAT domain-shift figure}
+  - {pattern: outputs/models/trained_model.pt, label: trained state dictionary}
+  - {pattern: outputs/extension/*, label: one extension artifact, minimum: 1}
+allowed_extensions: [.ipynb, .html, .py, .md, .png, .jpg, .jpeg, .csv, .json, .txt, .pt]
+prohibited_patterns: ["datasets", "datasets/**", "env", "env/**", ".venv", ".venv/**", "checkpoints", "checkpoints/**", "*.pth", "*.ckpt", "*.onnx", "*.safetensors", "*.zip"]
+warning_patterns: ["data", "data/**", "config", "config/**", "__pycache__", "__pycache__/**", ".pytest_cache", ".pytest_cache/**", ".ipynb_checkpoints", ".ipynb_checkpoints/**", "cache", "cache/**", "caches", "caches/**", "wandb", "wandb/**", "runs", "runs/**", "*.tmp", "*~"]
+package:
+  include_patterns: [A3.ipynb, A3.html, "src/*.py", "outputs/figures/*", "outputs/tables/*", "outputs/models/trained_model.pt", "outputs/extension/*"]
+artifact_schemas:
+  csv:
+    outputs/tables/experiment_metrics.csv: [experiment, method, condition, metric, value, units]
+    outputs/tables/predictions.csv: [sample_id, split, true_label, predicted_label, confidence]
+  json:
+    outputs/tables/model_metadata.json: [architecture, num_classes, class_names, checkpoint, parameter_counts.total, parameter_counts.trainable, seed, selected_by]
+image_artifacts:
+  outputs/figures/training_curves.png: {min_width: 600, min_height: 300}
+  outputs/figures/confusion_matrix.png: {min_width: 500, min_height: 400}
+  outputs/figures/embedding_visualization.png: {min_width: 500, min_height: 400}
+  outputs/figures/augmentation_examples.png: {min_width: 600, min_height: 300}
+  outputs/figures/robustness_results.png: {min_width: 600, min_height: 300}
+  outputs/figures/failure_analysis.png: {min_width: 600, min_height: 350}
+  outputs/figures/skin_cancer_class_balance.png: {min_width: 600, min_height: 300}
+  outputs/figures/eurosat_transfer_results.png: {min_width: 600, min_height: 200}

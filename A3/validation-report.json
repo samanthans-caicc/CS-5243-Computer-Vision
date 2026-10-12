@@ -1,0 +1,61 @@
+{
+  "assignment": "A3",
+  "assignment_version": "A3-2026.1",
+  "environment_version": "2026.1",
+  "mode": "full",
+  "student": {
+    "name": "Samantha Salas",
+    "first_name": "Samantha",
+    "last_name": "Salas",
+    "abc123": "xso947"
+  },
+  "valid": true,
+  "summary": {
+    "errors": 0,
+    "warnings": 7
+  },
+  "findings": [
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": ".pytest_cache"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "config"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "data"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "src/__pycache__"
+    },
+    {
+      "level": "warning",
+      "code": "excluded-path",
+      "message": "This cache or temporary path will not be packaged.",
+      "path": "tests_public/__pycache__"
+    },
+    {
+      "level": "warning",
+      "code": "large-file-warning",
+      "message": "Review this file because it exceeds 10 MB.",
+      "path": "outputs/models/trained_model.pt"
+    },
+    {
+      "level": "warning",
+      "code": "placeholder-text",
+      "message": "Review unresolved placeholder text before submission.",
+      "path": "A3.ipynb"
+    }
+  ]
+}

@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inside student_code.py — A3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<style>
+:root{
+  --ground:#EDEFF2; --surface:#FBFCFD; --surface-2:#E3E7EC; --sunken:#F4F6F9;
+  --ink:#151A21; --ink-2:#39424D; --muted:#5C6774; --line:#CAD1D9; --line-soft:#DEE3E9;
+  --accent:#B5195B; --accent-ink:#8E1147; --accent-wash:#F7E5ED;
+  --teal:#0E7480; --teal-wash:#E0F0F1;
+  --ch-r:#C93F31; --ch-g:#2C8446; --ch-b:#3260C0;
+  --tok-kw:#9B1552; --tok-str:#0E6B60; --tok-num:#8A5A00; --tok-fn:#1E2833; --tok-builtin:#2F5FB3;
+  --shadow:0 1px 2px rgba(21,26,33,.06), 0 8px 24px -18px rgba(21,26,33,.4);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1318; --surface:#161C23; --surface-2:#1F2831; --sunken:#12181F;
+    --ink:#E7EBF0; --ink-2:#C3CBD4; --muted:#8C97A4; --line:#2B343E; --line-soft:#222B34;
+    --accent:#FF6FA5; --accent-ink:#FF8FBA; --accent-wash:#331021;
+    --teal:#4FCBBE; --teal-wash:#0E2A2B;
+    --ch-r:#EE7263; --ch-g:#5FC97A; --ch-b:#7BA2F2;
+    --tok-kw:#FF7FB0; --tok-str:#6FD3C4; --tok-num:#E0A458; --tok-fn:#E7EBF0; --tok-builtin:#8DAFF7;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1318; --surface:#161C23; --surface-2:#1F2831; --sunken:#12181F;
+  --ink:#E7EBF0; --ink-2:#C3CBD4; --muted:#8C97A4; --line:#2B343E; --line-soft:#222B34;
+  --accent:#FF6FA5; --accent-ink:#FF8FBA; --accent-wash:#331021;
+  --teal:#4FCBBE; --teal-wash:#0E2A2B;
+  --ch-r:#EE7263; --ch-g:#5FC97A; --ch-b:#7BA2F2;
+  --tok-kw:#FF7FB0; --tok-str:#6FD3C4; --tok-num:#E0A458; --tok-fn:#E7EBF0; --tok-builtin:#8DAFF7;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -20px rgba(0,0,0,.9);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground); color:var(--ink);
+  font-family:"Newsreader", Georgia, "Times New Roman", serif;
+  font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px 96px}
+h1,h2,h3,.disp{font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif; text-wrap:balance}
+code,kbd,pre,.mono{font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+a{color:var(--accent-ink); text-underline-offset:3px}
+
+/* ---------- masthead ---------- */
+.mast{padding:64px 0 40px; border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"JetBrains Mono",monospace; font-size:11.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+}
+.eyebrow .dot{width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block}
+h1{
+  margin:18px 0 0; font-size:clamp(38px,7vw,72px); line-height:.98;
+  font-weight:800; letter-spacing:-.028em;
+}
+h1 .file{color:var(--accent); font-family:"JetBrains Mono",monospace; font-size:.62em; letter-spacing:-.02em; font-weight:600}
+.deck{
+  margin:20px 0 0; max-width:63ch; font-size:20px; line-height:1.5;
+  color:var(--ink-2); font-weight:300;
+}
+.stats{display:flex; flex-wrap:wrap; gap:0; margin-top:34px; border:1px solid var(--line); border-radius:3px; background:var(--surface); overflow:hidden}
+.stat{flex:1 1 150px; padding:14px 18px; border-right:1px solid var(--line-soft)}
+.stat:last-child{border-right:0}
+.stat b{display:block; font-family:"Bricolage Grotesque",sans-serif; font-size:26px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.stat span{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.stat.pass b{color:var(--teal)}
+
+/* ---------- invariants ---------- */
+.invariants{margin:56px 0 0}
+.sec-head{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:6px}
+.sec-num{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--accent); letter-spacing:.1em}
+h2{margin:0; font-size:clamp(26px,3.4vw,34px); font-weight:700; letter-spacing:-.02em}
+.sec-sub{max-width:62ch; color:var(--muted); margin:8px 0 26px; font-size:17px}
+.inv-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px}
+.inv{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:18px 18px 20px; box-shadow:var(--shadow)}
+.inv h3{margin:0 0 8px; font-size:16px; font-weight:700; letter-spacing:-.01em}
+.inv p{margin:0; font-size:15.5px; color:var(--ink-2); line-height:1.55}
+.inv .tag{font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:10px}
+
+/* ---------- annotated source ---------- */
+.part{margin:72px 0 0; padding-top:8px}
+.pair{display:grid; gap:20px; margin-top:24px; align-items:start}
+@media (min-width:940px){ .pair{grid-template-columns:minmax(0,1.08fr) minmax(0,1fr); gap:32px} }
+.srcline{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 8px; display:flex; align-items:center; gap:8px;
+}
+.srcline::before{content:""; width:14px; height:1px; background:var(--accent); flex:none}
+pre{
+  margin:0; background:var(--sunken); border:1px solid var(--line-soft); border-radius:3px;
+  padding:16px 18px; overflow-x:auto; font-size:13.2px; line-height:1.62;
+}
+pre code{background:none; padding:0; font-size:inherit}
+.note p{margin:0 0 14px; color:var(--ink-2)}
+.note p:last-child{margin-bottom:0}
+.note strong{color:var(--ink); font-weight:600}
+.note code, p code, li code, td code{
+  background:var(--surface-2); border-radius:2px; padding:1px 5px; font-size:.86em; color:var(--ink);
+}
+.why{
+  border-left:2px solid var(--accent); padding:2px 0 2px 16px; margin:16px 0 0;
+}
+.why b{font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:4px}
+.why p{margin:0; font-size:16px}
+
+/* ---------- diagrams ---------- */
+figure{margin:26px 0 0; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 20px 14px; box-shadow:var(--shadow)}
+figure svg{display:block; width:100%; height:auto}
+figcaption{margin-top:12px; font-size:14.5px; color:var(--muted); line-height:1.5}
+.svg-label{font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.06em; fill:var(--muted)}
+.svg-strong{font-family:"JetBrains Mono",monospace; font-size:10px; fill:var(--ink); letter-spacing:.04em}
+
+/* ---------- channel chips ---------- */
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin:16px 0 0}
+.chip{
+  font-family:"JetBrains Mono",monospace; font-size:11.5px; padding:4px 10px; border-radius:2px;
+  border:1px solid currentColor; background:var(--surface);
+}
+.chip.r{color:var(--ch-r)} .chip.g{color:var(--ch-g)} .chip.b{color:var(--ch-b)}
+
+/* ---------- table ---------- */
+.tablewrap{overflow-x:auto; margin-top:22px; border:1px solid var(--line); border-radius:3px; background:var(--surface)}
+table{border-collapse:collapse; width:100%; min-width:620px; font-size:15px}
+th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--line-soft); vertical-align:top}
+th{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); font-weight:400; background:var(--sunken);
+}
+tr:last-child td{border-bottom:0}
+td.fn{font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--accent-ink); white-space:nowrap}
+
+/* ---------- edges ---------- */
+.edges{display:grid; gap:0; margin-top:24px; border:1px solid var(--line); border-radius:3px; background:var(--surface); overflow:hidden}
+.edge{display:grid; gap:4px 18px; padding:18px 20px; border-bottom:1px solid var(--line-soft)}
+@media (min-width:760px){ .edge{grid-template-columns:210px minmax(0,1fr)} }
+.edge:last-child{border-bottom:0}
+.edge h3{margin:0; font-size:14px; font-weight:700; letter-spacing:-.01em}
+.edge h3 span{display:block; font-family:"JetBrains Mono",monospace; font-weight:400; font-size:11px; color:var(--muted); margin-top:4px; letter-spacing:0}
+.edge p{margin:0; font-size:15.5px; color:var(--ink-2)}
+
+/* ---------- verify ---------- */
+.verify{margin-top:72px; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:28px; box-shadow:var(--shadow)}
+.verify h2{font-size:24px}
+.term{
+  margin-top:18px; background:var(--sunken); border:1px solid var(--line-soft); border-radius:3px;
+  padding:16px 18px; font-family:"JetBrains Mono",monospace; font-size:13px; overflow-x:auto; line-height:1.7;
+}
+.term .prompt{color:var(--accent)}
+.term .ok{color:var(--teal)}
+footer{margin-top:56px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:14px}
+
+/* ---------- syntax ---------- */
+.hljs-keyword,.hljs-literal{color:var(--tok-kw)}
+.hljs-string{color:var(--tok-str)}
+.hljs-number{color:var(--tok-num)}
+.hljs-comment{color:var(--muted); font-style:italic}
+.hljs-built_in,.hljs-type{color:var(--tok-builtin)}
+.hljs-title,.hljs-title.function_,.hljs-title.class_{color:var(--tok-fn); font-weight:600}
+.hljs-params{color:var(--ink-2)}
+.hljs-attr{color:var(--ink-2)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){ .inv,.edge{transition:none} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="eyebrow">
+    <span class="dot"></span>CS 5243 · Assignment 3<span>/</span>A3-2026.1<span>/</span>Code walkthrough
+  </div>
+  <h1>Inside <span class="file">student_code.py</span></h1>
+  <p class="deck">Ten graded functions that load images reproducibly, build a pretrained network offline, adapt it, and measure what it learned — on a bundled dataset and on two downloaded ones. Here is what each one does, and why it does it that way.</p>
+
+  <div class="stats">
+    <div class="stat"><b>10</b><span>graded functions</span></div>
+    <div class="stat"><b>10</b><span>helpers &amp; classes</span></div>
+    <div class="stat"><b>440</b><span>lines</span></div>
+    <div class="stat"><b>5</b><span>dependencies — torch, torchvision, numpy, PIL, matplotlib</span></div>
+    <div class="stat pass"><b>4 / 4</b><span>public tests pass</span></div>
+  </div>
+</header>
+
+<section class="invariants">
+  <div class="sec-head"><span class="sec-num">CROSS-CUTTING</span><h2>Four rules the whole file obeys</h2></div>
+  <p class="sec-sub">Every function is a variation on the same commitments. Once you see them, the file stops being ten separate problems.</p>
+  <div class="inv-grid">
+    <div class="inv">
+      <span class="tag">Rule 01</span>
+      <h3>Augmentation can only reach <code>train</code></h3>
+      <p>Both loader builders map splits to transforms in one dictionary, with <code>validation</code> and <code>test</code> hard-wired to <code>evaluation_transform()</code>. No argument can put a random transform on an evaluation split.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 02</span>
+      <h3>Load strictly, then replace</h3>
+      <p>The ImageNet state dictionary is loaded into the unmodified 1000-class model with <code>strict=True</code>, and only then is the last head layer swapped. Every pretrained tensor is checked by key and shape; none can be silently left random.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 03</span>
+      <h3>Mode and gradients are always set explicitly</h3>
+      <p>Training calls <code>.train()</code>. Everything that measures — <code>evaluate_model</code>, <code>predict</code>, <code>extract_embeddings</code> — is decorated <code>@torch.no_grad()</code> <em>and</em> calls <code>.eval()</code>. No function inherits a mode from whatever ran before it.</p>
+    </div>
+    <div class="inv">
+      <span class="tag">Rule 04</span>
+      <h3>Order is part of the contract</h3>
+      <p>Only training shuffles, from a private seeded generator. Evaluation arrays come back in loader order, so labels, predictions, probabilities, embeddings, and <code>predictions.csv</code> rows all line up by index.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">01</span><h2>A data pipeline that only randomizes training</h2></div>
+  <p class="sec-sub">64×64 arrays in, 224×224 ImageNet-normalized tensors out — with every source of randomness either seeded or absent.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:20–59 · constants, evaluation_transform, training_transform</p>
+      <pre><code class="language-python">IMAGENET_MEAN = (0.485, 0.456, 0.406)
+IMAGENET_STD = (0.229, 0.224, 0.225)
+IMAGE_SIZE = 224
+
+def evaluation_transform(image_size=IMAGE_SIZE):
+    return transforms.Compose([transforms.Resize((image_size, image_size))]
+                              + _normalization())
+
+def training_transform(augmentation, image_size=IMAGE_SIZE):
+    if augmentation == "none":
+        return evaluation_transform(image_size)
+    if augmentation == "moderate":
+        steps = [Resize((s, s)), RandomHorizontalFlip(0.5),
+                 RandomVerticalFlip(0.5),
+                 ColorJitter(brightness=0.2, contrast=0.2)]
+    else:   # strong
+        steps = [RandomResizedCrop(s, scale=(0.6, 1.0), ratio=(0.8, 1.25)),
+                 RandomHorizontalFlip(0.5), RandomVerticalFlip(0.5),
+                 RandomRotation(30),
+                 ColorJitter(0.4, 0.4, 0.4, hue=0.1), RandomGrayscale(0.1)]
+    return transforms.Compose(steps + _normalization())</code></pre>
+    </div>
+    <div class="note">
+      <p><code>ToTensor</code> moves the channel axis first and scales to <code>[0, 1]</code>; <code>Normalize</code> applies the <strong>ImageNet</strong> statistics, because those are what the pretrained filters were trained on. The notebook's printed range <code>(−2.001, 2.64)</code> is the result.</p>
+      <p>Every split is resized to 224, the scale the backbones learned at. <code>none</code> <em>is</em> the evaluation transform, so Experiment 3's baseline differs from evaluation in nothing.</p>
+      <p><strong>moderate</strong> is label-preserving for all six classes — flips map stripes, checkers, circles, dots, and diagonals onto their own class. <strong>strong</strong> adds a ±30° rotation and random crops, which start to erode the orientation evidence the horizontal / vertical / diagonal classes are defined by.</p>
+      <div class="why">
+        <b>Why validate first</b>
+        <p>The level is checked before anything is built, so <code>"Strong"</code> fails in microseconds rather than after a ten-epoch run — or, in <code>build_external_dataloaders</code>, before a 3.7 GB download.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:62–132 · helpers, ArrayImageDataset, build_dataloaders</p>
+      <pre><code class="language-python">def _loader_generator(seed):
+    generator = torch.Generator(); generator.manual_seed(int(seed))
+    return generator
+
+def _drop_last(size, batch_size, shuffle):
+    return bool(shuffle and batch_size &gt; 1 and size % batch_size == 1)
+
+class ArrayImageDataset(Dataset):
+    def __getitem__(self, index):
+        image = Image.fromarray(self.images[index]).convert("RGB")
+        return self.transform(image), int(self.labels[index])
+
+archive = np.load(Path(dataset_path))
+transform_of = {"train": training_transform(augmentation),
+                "validation": evaluation_transform(),
+                "test": evaluation_transform()}
+for split in ("train", "validation", "test"):
+    shuffle = split == "train"
+    loaders[split] = DataLoader(dataset, batch_size=batch_size,
+        shuffle=shuffle, num_workers=num_workers,
+        generator=_loader_generator(seed) if shuffle else None,
+        worker_init_fn=_worker_init if num_workers else None,
+        drop_last=_drop_last(len(dataset), batch_size, shuffle))</code></pre>
+    </div>
+    <div class="note">
+      <p>A <strong>private generator</strong> per training loader makes the shuffle order a function of <code>seed</code> alone, independent of how much of the global RNG earlier cells used. The DataLoader also draws each epoch's worker seed from it, so augmentation draws inside workers are reproducible too; <code>_worker_init</code> extends that to NumPy and Python's <code>random</code>.</p>
+      <p><code>_drop_last</code> drops a trailing batch only if it holds exactly <strong>one</strong> image — BatchNorm cannot compute a training-mode variance from one sample. 720 % 32 = 16, so it never fires on the bundled data; it exists for arbitrary Hugging Face split sizes.</p>
+      <p><code>ArrayImageDataset</code> wraps each array as a PIL image on demand because torchvision transforms expect PIL input. It is public because the notebook reuses it for noisy test sets, corrupted labels, and rotated training data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">02</span><h2>An offline pretrained model, and a precise idea of "the head"</h2></div>
+  <p class="sec-sub">Build bare, load strictly, replace one layer, and write down exactly which parameters that layer owns.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:135–168 · build_model, freeze_backbone, unfreeze_all</p>
+      <pre><code class="language-python">model = getattr(torchvision.models, architecture)(weights=None)
+state_dict = torch.load(Path(weights_path), map_location="cpu",
+                        weights_only=True)
+model.load_state_dict(state_dict)                 # strict=True
+
+head_index = len(model.classifier) - 1
+old_head = model.classifier[head_index]
+model.classifier[head_index] = nn.Linear(old_head.in_features,
+                                         int(num_classes))
+model.a3_head_parameters = tuple(
+    f"classifier.{head_index}.{name}"
+    for name, _ in model.classifier[head_index].named_parameters())
+
+def freeze_backbone(model):
+    head = set(getattr(model, "a3_head_parameters", ()) or ())
+    for name, parameter in model.named_parameters():
+        parameter.requires_grad = (name in head) if head \
+                                  else ("classifier" in name)
+    return model</code></pre>
+    </div>
+    <div class="note">
+      <p><code>weights=None</code> builds the architecture with no download. <code>weights_only=True</code> restricts <code>torch.load</code>'s pickle to tensors and plain containers, the safe setting for any file from elsewhere. <code>strict=True</code> means every key must match in both directions.</p>
+      <p><code>len(model.classifier) - 1</code> finds the last layer of either head — index 3 for MobileNet, 1 for EfficientNet — and <code>in_features</code> reads its width (1024 / 1280) instead of hard-coding it.</p>
+      <div class="why">
+        <b>Why record exact parameter names</b>
+        <p>MobileNet's head starts with a <em>pretrained</em> <code>Linear(576, 1024)</code>. "Everything with <code>classifier</code> in its name" would unfreeze its 590,848 weights too. The stored names keep exactly the replacement layer trainable: 6,150 numbers for MobileNet, 7,686 for EfficientNet. The substring rule is only a fallback for models not built here.</p>
+      </div>
+    </div>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 680 200" role="img" aria-label="Frozen transfer trains only the replacement head; full fine-tuning trains every layer. For MobileNet, the pretrained classifier.0 layer stays frozen in the frozen condition.">
+      <text x="10" y="22" class="svg-label">FROZEN TRANSFER  ·  freeze_backbone</text>
+      <rect x="10" y="32" width="300" height="44" fill="var(--sunken)" stroke="var(--line)"/>
+      <text x="22" y="59" class="svg-strong">features (pretrained, requires_grad=False)</text>
+      <rect x="320" y="32" width="150" height="44" fill="var(--sunken)" stroke="var(--line)"/>
+      <text x="330" y="52" class="svg-strong">classifier[0..n-1]</text>
+      <text x="330" y="67" class="svg-label">pretrained · frozen</text>
+      <rect x="480" y="32" width="190" height="44" fill="var(--accent-wash)" stroke="var(--accent)"/>
+      <text x="490" y="52" class="svg-strong">classifier[-1]  Linear(d → K)</text>
+      <text x="490" y="67" class="svg-label">new · trainable · 6,150 / 7,686</text>
+
+      <text x="10" y="122" class="svg-label">FULL FINE-TUNING  ·  unfreeze_all</text>
+      <rect x="10" y="132" width="300" height="44" fill="var(--teal-wash)" stroke="var(--teal)"/>
+      <text x="22" y="159" class="svg-strong">features (pretrained, requires_grad=True)</text>
+      <rect x="320" y="132" width="150" height="44" fill="var(--teal-wash)" stroke="var(--teal)"/>
+      <text x="330" y="152" class="svg-strong">classifier[0..n-1]</text>
+      <text x="330" y="167" class="svg-label">pretrained · trainable</text>
+      <rect x="480" y="132" width="190" height="44" fill="var(--accent-wash)" stroke="var(--accent)"/>
+      <text x="490" y="152" class="svg-strong">classifier[-1]  Linear(d → K)</text>
+      <text x="490" y="167" class="svg-label">new · trainable · 4,015,234 total</text>
+    </svg>
+    <figcaption>Both conditions start from the same strictly loaded ImageNet weights and the same seeded random head. They differ only in which <code>requires_grad</code> flags are set. In either mode, <code>model.train()</code> still lets BatchNorm update its running statistics, frozen or not.</figcaption>
+  </figure>
+</section>
+
+<!-- ============ 3 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Training and measuring, kept apart</h2></div>
+  <p class="sec-sub">One function changes weights. Three functions only look — and each of them switches both autograd and layer behaviour off.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:171–190 · train_one_epoch</p>
+      <pre><code class="language-python">model.to(device).train()
+for images, labels in loader:
+    images = images.to(device, non_blocking=True)
+    labels = labels.to(device, non_blocking=True)
+    optimizer.zero_grad(set_to_none=True)
+    logits = model(images)
+    loss = criterion(logits, labels)
+    loss.backward()
+    optimizer.step()
+    count = labels.numel()
+    total_loss += float(loss.detach()) * count
+    total_correct += int((logits.detach().argmax(dim=1) == labels).sum())
+    total_seen += count
+return {"loss": total_loss / total_seen,
+        "accuracy": total_correct / total_seen}</code></pre>
+    </div>
+    <div class="note">
+      <p>Zero → forward → loss → backward → step. <code>set_to_none=True</code> frees gradient tensors rather than zero-filling them, and leaves a frozen parameter's <code>.grad</code> as <code>None</code>.</p>
+      <p>The criterion returns a batch <em>mean</em>, so it is multiplied back by the batch size: the result is the true per-sample mean even when the last batch is short. <code>.detach()</code> keeps the running sum from holding every batch's autograd graph.</p>
+      <div class="why">
+        <b>A running average, not a clean score</b>
+        <p>Training accuracy is accumulated while the weights change, with dropout on and augmentation applied. That is why the notebook often shows training accuracy <em>below</em> validation accuracy — a negative gap is expected, not a bug.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:193–228 · evaluate_model, predict</p>
+      <pre><code class="language-python">@torch.no_grad()
+def evaluate_model(model, loader, criterion, device):
+    model.to(device).eval()
+    for images, labels in loader:
+        logits = model(images)
+        loss = criterion(logits, labels)
+        total_loss += float(loss.detach()) * count
+        probabilities = torch.softmax(logits, dim=1)
+        all_probabilities.append(probabilities.cpu().numpy())
+        all_predictions.append(logits.argmax(dim=1).cpu().numpy())
+        all_labels.append(labels.cpu().numpy())
+    ...
+
+@torch.no_grad()
+def predict(model, images, device):
+    model.to(device).eval()
+    logits = model(images.to(device))
+    probabilities = torch.softmax(logits, dim=1)
+    return {"predictions": logits.argmax(dim=1).cpu(),
+            "probabilities": probabilities.cpu()}</code></pre>
+    </div>
+    <div class="note">
+      <p><code>@torch.no_grad()</code> and <code>.eval()</code> are different switches. The first stops autograd from building a graph; the second turns dropout off and makes BatchNorm use its stored statistics. Evaluation needs both.</p>
+      <p>Softmax runs over <code>dim=1</code>, the class axis. Predictions come from the logits' argmax, which equals the probabilities' argmax because softmax preserves order.</p>
+      <p><code>evaluate_model</code> returns NumPy arrays in loader order; <code>predict</code> returns CPU tensors for one batch. Whichever criterion is passed is used — the notebook always passes plain cross-entropy here, so label-smoothed runs are measured on the same scale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">04</span><h2>One table, every metric — and what the network actually learned</h2></div>
+  <p class="sec-sub">Rows are true classes, columns are predictions. Precision reads a column, recall reads a row, and the embedding is whatever feeds the last layer.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:257–291 · classification_metrics</p>
+      <pre><code class="language-python">count = len(class_names)
+matrix = np.zeros((count, count), dtype=np.int64)
+for true_label, predicted_label in zip(labels, predictions):
+    matrix[true_label, predicted_label] += 1
+
+true_positive   = np.diag(matrix).astype(np.float64)
+predicted_total = matrix.sum(axis=0).astype(np.float64)   # columns
+actual_total    = matrix.sum(axis=1).astype(np.float64)   # rows
+with np.errstate(divide="ignore", invalid="ignore"):
+    precision = np.where(predicted_total &gt; 0, true_positive / predicted_total, 0.0)
+    recall    = np.where(actual_total &gt; 0, true_positive / actual_total, 0.0)
+    f1 = np.where(precision + recall &gt; 0,
+                  2 * precision * recall / (precision + recall), 0.0)
+return {..., "per_class_accuracy": recall.copy(),
+        "support": actual_total.astype(np.int64),
+        "macro_f1": float(f1.mean())}</code></pre>
+    </div>
+    <div class="note">
+      <p>The matrix is sized by <code>class_names</code>, not by the labels present, so a class that is never predicted still has a column — Experiment 8's dermatofibroma (precision 0, recall 0) needs that.</p>
+      <p>Undefined ratios become <strong>0</strong>, not <code>NaN</code>, so macro-F1 always computes. <code>np.where</code> evaluates both branches; <code>errstate</code> silences the warning from the discarded one.</p>
+      <p>Per-class accuracy as the task defines it, <code>TP / (TP + FN)</code>, is recall. It is returned as a <strong>copy</strong>, so the two arrays cannot alias. <code>macro_f1</code> weights every class equally — which is why Experiment 8 shows 0.795 accuracy beside 0.479 macro-F1.</p>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:231–254 · extract_embeddings</p>
+      <pre><code class="language-python">@torch.no_grad()
+def extract_embeddings(model, loader, device):
+    model.to(device).eval()
+    captured = []
+
+    def hook(_module, inputs, _output):
+        captured.append(inputs[0].detach()
+                        .flatten(start_dim=1).cpu().numpy())
+
+    handle = model.classifier[-1].register_forward_hook(hook)
+    try:
+        for images, labels in loader:
+            model(images.to(device))
+            all_labels.append(np.asarray(labels).reshape(-1))
+    finally:
+        handle.remove()</code></pre>
+    </div>
+    <div class="note">
+      <p>The embedding is never returned by <code>forward</code>, so a <strong>forward hook</strong> on the final layer captures its <em>input</em> — exactly the vector the head classifies, for both architectures, without re-implementing either forward pass. 1024-d for MobileNet, 1280-d for EfficientNet.</p>
+      <p><code>flatten(start_dim=1)</code> guarantees <code>(batch, features)</code>. Copying to the CPU inside the hook keeps GPU memory flat.</p>
+      <div class="why">
+        <b>Why <code>finally</code></b>
+        <p>A hook stays attached until removed. Left behind, it would fire on every later forward pass — training, evaluation, the next extraction — appending to a list nobody reads. <code>finally</code> removes it even if a batch raises.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:294–332 · plot_confusion_matrix</p>
+      <pre><code class="language-python">shown = matrix.astype(np.float64)
+if normalize:
+    row_totals = shown.sum(axis=1, keepdims=True)
+    shown = np.divide(shown, row_totals, out=np.zeros_like(shown),
+                      where=row_totals &gt; 0)
+side = max(5.0, 0.62 * len(class_names) + 2.6)
+fig, ax = plt.subplots(figsize=(side, side * 0.86), dpi=130)
+image = ax.imshow(shown, cmap="Blues", vmin=0.0, vmax=...)
+ax.set_xlabel("predicted class"); ax.set_ylabel("true class")
+if len(class_names) &lt;= 12:
+    ...  # annotate counts, white text on dark cells
+ax.set_xticks(np.arange(-0.5, len(class_names), 1), minor=True)
+ax.grid(which="minor", color="white", linewidth=0.6)
+return fig, ax</code></pre>
+    </div>
+    <div class="note">
+      <p>Normalization is by <strong>row</strong>, so the diagonal reads as per-class recall and classes of different sizes share one scale. An empty row stays 0 rather than <code>NaN</code>.</p>
+      <p>Size grows with the class count; annotations switch colour above 60 % of the maximum and are skipped past 12 classes; minor ticks at half-integers draw gridlines <em>between</em> cells.</p>
+      <p>No <code>show()</code>, no <code>savefig()</code>: the caller owns the figure. Experiment 6 saves it; Task 5's demo only displays it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Two real datasets through the same contract</h2></div>
+  <p class="sec-sub">The one function allowed to touch the network — and it hands back loaders indistinguishable from the bundled ones.</p>
+
+  <div class="pair">
+    <div>
+      <p class="srcline">student_code.py:372–440 · build_external_dataloaders</p>
+      <pre><code class="language-python">import datasets
+raw = datasets.load_dataset(hf_dataset_name)
+if hf_dataset_name == "marmal88/skin_cancer":
+    raw = a3_tools.resplit_by_lesion(raw)
+if "validation" not in raw or "test" not in raw:
+    ...  # carve 15 % per missing split from train, seeded
+
+feature = raw["train"].features[label_column]
+if isinstance(feature, datasets.ClassLabel):
+    class_names, label_to_index = list(feature.names), None
+else:
+    observed = set()
+    for split in raw.values():
+        observed.update(split.unique(label_column))
+    class_names = [str(v) for v in sorted(observed)]
+    label_to_index = {v: i for i, v in enumerate(sorted(observed))}
+
+image_column = _hf_image_column(raw["train"])
+...  # same transform dictionary, generator, and drop_last as build_dataloaders</code></pre>
+    </div>
+    <div class="note">
+      <p><code>datasets</code> is imported inside the function, so the rest of the module works without it and the network dependency is confined to one place. Downloads are cached outside <code>A3/</code>.</p>
+      <p><strong>Skin Cancer</strong> is re-split by <code>lesion_id</code>, so no lesion appears in two splits — the defence against near-duplicate leakage. <strong>EuroSAT</strong> keeps its published splits.</p>
+      <p>Labels must become <code>0…K−1</code>. EuroSAT's <code>ClassLabel</code> already is; Skin Cancer's <code>dx</code> strings are collected from <em>every</em> split and <strong>sorted</strong>, so the numbering is identical on every machine.</p>
+      <div class="why">
+        <b>Why lazy rows</b>
+        <p><code>HFImageDataset</code> decodes one image per <code>__getitem__</code> from the cache, so 16,200 tiles never sit in memory at once. Decoding is per-epoch CPU work — the reason the notebook raises the worker count to 6 for these runs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">06</span><h2>What each function is answerable for</h2></div>
+  <p class="sec-sub">The contract each graded function meets, and where the notebook depends on it.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Function</th><th>Contract</th><th>Used by</th></tr></thead>
+      <tbody>
+        <tr><td class="fn">build_dataloaders</td><td>train / validation / test; augmentation on train only; ImageNet-normalized deterministic evaluation; seeded shuffle</td><td>Task 1, every experiment</td></tr>
+        <tr><td class="fn">build_model</td><td>No download; strict local load, then replace <code>classifier[-1]</code>; head names recorded</td><td>Task 2, every run</td></tr>
+        <tr><td class="fn">freeze_backbone</td><td>Only the replacement head trainable</td><td>Task 3, Exps 1–7, 9, Tasks 6–7</td></tr>
+        <tr><td class="fn">train_one_epoch</td><td>One full epoch; sample-weighted loss and accuracy</td><td>Task 3, every run</td></tr>
+        <tr><td class="fn">evaluate_model</td><td><code>no_grad</code> + <code>eval</code>; loss, accuracy, labels, predictions, probabilities in loader order</td><td>Task 3, every run, Exp 7</td></tr>
+        <tr><td class="fn">predict</td><td>CPU predictions and softmax probabilities for one batch</td><td>Task 4</td></tr>
+        <tr><td class="fn">extract_embeddings</td><td>Input to <code>classifier[-1]</code>, flattened, with labels in loader order; hook always removed</td><td>Task 5, Exp 5</td></tr>
+        <tr><td class="fn">classification_metrics</td><td>Rows true / columns predicted; precision, recall, F1, per-class accuracy; zero-division → 0</td><td>Tasks 4, 6, Exps 6–9</td></tr>
+        <tr><td class="fn">plot_confusion_matrix</td><td>Labelled figure returned as <code>(fig, ax)</code>; never shown or saved</td><td>Task 5, Exp 6</td></tr>
+        <tr><td class="fn">build_external_dataloaders</td><td>Same loader contract for any HF dataset; lesion resplit for Skin Cancer; labels mapped to <code>0…K−1</code>; names on the dataset</td><td>Exps 8, 9</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ edges ============ -->
+<section class="part">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Sharp edges</h2></div>
+  <p class="sec-sub">Nothing here fails the public tests. These are places where the code makes a choice worth defending, or where its evidence in the notebook reads wrong.</p>
+
+  <div class="edges">
+    <div class="edge">
+      <h3>Verifying a load or a mode needs the right moment<span>cells a3bc3d4b, bcda558b</span></h3>
+      <p>Two notebook checks first printed <code>False</code> for correct functions. Task 2 compared the backbone with the weight file <em>after</em> a training-mode forward pass, which had already updated 102 BatchNorm buffers; Task 3 read <code>torch.is_grad_enabled()</code> after <code>evaluate_model</code> had returned and restored gradients. Both cells now check at the right moment — before the forward pass, and from a hook inside the evaluation call — and print <code>True</code>.</p>
+    </div>
+    <div class="edge">
+      <h3>Frozen is not the same as unchanging<span>train_one_epoch:174</span></h3>
+      <p><code>model.train()</code> applies to the frozen backbone too: its BatchNorm running statistics adapt to the new data and its dropout is active. "Frozen" fixes the learnable weights, not the buffers. A strict linear probe would put the backbone in eval mode during training.</p>
+    </div>
+    <div class="edge">
+      <h3>Negative labels index silently<span>classification_metrics:275–276</span></h3>
+      <p>A label of <code>-1</code> would increment the <em>last</em> row instead of raising, because NumPy accepts negative indices. Labels above <code>K−1</code> do raise. Every caller here produces valid labels, but a range check would make the failure loud.</p>
+    </div>
+    <div class="edge">
+      <h3>One GPU sync per batch<span>train_one_epoch:185–186</span></h3>
+      <p><code>float(loss)</code> and <code>int(...sum())</code> copy to the host every step, which forces the GPU to finish the step first. On these models it is invisible; on a large model, accumulating on the device and converting once per epoch would remove the stall.</p>
+    </div>
+    <div class="edge">
+      <h3>Seeded is not the same as deterministic on a GPU<span>a3_tools.seed_everything</span></h3>
+      <p>Every random generator is seeded, but cuDNN's convolution backward kernels may still sum in a different order from run to run. Two runs of the notebook matched bit-for-bit on every frozen run and differed on full fine-tuning: Experiment 9's fine-tuned test accuracy was 0.9750 in one run and 0.9674 in the next. <code>torch.backends.cudnn.deterministic = True</code> plus <code>torch.use_deterministic_algorithms(True)</code> would remove that, usually at some speed cost.</p>
+    </div>
+    <div class="edge">
+      <h3>A loaders object keeps its shuffle state<span>build_external_dataloaders:436</span></h3>
+      <p>Each training loader owns one generator that advances every epoch. Reusing a loader for a second run continues the sequence rather than restarting it — Experiment 9's frozen probe trains on a different batch order from the fine-tuned run it is compared with. Building fresh loaders per run, as <code>run_training</code> does for the bundled data, restarts it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="verify">
+  <h2>Check it yourself</h2>
+  <p style="margin:10px 0 0; color:var(--ink-2); max-width:62ch">Run from the workspace folder that holds <code>A3/</code> and <code>common-setup/</code>. The public tests are sanity checks, not a correctness proof — they do not exercise augmentation, evaluation mode, per-class metric values, or the external datasets.</p>
+  <div class="term">
+<span class="prompt">$</span> conda activate cs5243
+<span class="prompt">$</span> pytest A3/tests_public -q
+....                                                     [100%]
+<span class="ok">4 passed in 29.83s</span>
+<span class="prompt">$</span> python common-setup/scripts/validate_submission.py --assignment A3
+<span class="ok">valid: true · 0 errors</span> · 5 warnings (3 cache paths, 16.4 MB checkpoint, placeholder text)
+  </div>
+  <p style="margin:16px 0 0; color:var(--muted); font-size:15px">Covered: function signatures and asset hashes, reproducible train batches for a fixed seed, MobileNet output shape and a classifier-only freeze, and predict / embedding / metrics shapes on a tiny two-layer model.</p>
+</section>
+
+<footer>
+  Walkthrough of <code>A3/src/student_code.py</code> — 440 lines, PyTorch + torchvision, with Hugging Face <code>datasets</code> imported only inside <code>build_external_dataloaders</code>. Assignment A3-2026.1, environment 2026.1.
+</footer>
+
+</div>
+
+<script>
+  hljs.highlightAll();
+</script>
+</body>
+</html>

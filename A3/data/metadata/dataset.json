@@ -1,0 +1,29 @@
+{
+  "seed": 5243,
+  "classes": [
+    "checker",
+    "circles",
+    "diagonal",
+    "dots",
+    "horizontal",
+    "vertical"
+  ],
+  "image_shape": [
+    64,
+    64,
+    3
+  ],
+  "dtype": "uint8",
+  "split_counts_per_class": {
+    "train": 120,
+    "validation": 30,
+    "test": 30
+  },
+  "split_sizes": {
+    "train": 720,
+    "validation": 180,
+    "test": 180
+  },
+  "license": "CC0-1.0",
+  "generation": "course-staff deterministic synthetic patterns"
+}

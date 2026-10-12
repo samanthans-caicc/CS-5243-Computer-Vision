@@ -1,0 +1,282 @@
+experiment,method,condition,metric,value,units
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,best_val_accuracy,0.9888888888888889,fraction
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,best_val_loss,0.1986510240369373,cross-entropy
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,final_train_accuracy,0.9986111111111111,fraction
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,final_train_loss,0.014650603187166981,cross-entropy
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,generalization_gap,0.009722222222222188,fraction
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,selected_epoch,7.0,epoch
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,total_parameters,1524006.0,count
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,trainable_parameters,6150.0,count
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,train_wall_time,15.626627922058105,seconds
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,seconds_per_epoch,1.5626627922058105,seconds
+1,frozen transfer (architecture comparison),exp1_mobilenet_v3_small,inference_latency,0.4852767555555854,ms/image
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,best_val_accuracy,1.0,fraction
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,best_val_loss,0.16327754590246413,cross-entropy
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,final_train_accuracy,0.9986111111111111,fraction
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,final_train_loss,0.03759736650519901,cross-entropy
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,generalization_gap,-0.001388888888888884,fraction
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,selected_epoch,2.0,epoch
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,total_parameters,4015234.0,count
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,trainable_parameters,7686.0,count
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,train_wall_time,24.530526638031006,seconds
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,seconds_per_epoch,2.4530526638031005,seconds
+1,frozen transfer (architecture comparison),exp1_efficientnet_b0,inference_latency,1.8187162722223447,ms/image
+2,frozen transfer vs full fine-tuning,exp2_frozen,best_val_accuracy,1.0,fraction
+2,frozen transfer vs full fine-tuning,exp2_frozen,best_val_loss,0.16327754590246413,cross-entropy
+2,frozen transfer vs full fine-tuning,exp2_frozen,final_train_accuracy,0.9986111111111111,fraction
+2,frozen transfer vs full fine-tuning,exp2_frozen,final_train_loss,0.03759736650519901,cross-entropy
+2,frozen transfer vs full fine-tuning,exp2_frozen,generalization_gap,-0.001388888888888884,fraction
+2,frozen transfer vs full fine-tuning,exp2_frozen,selected_epoch,2.0,epoch
+2,frozen transfer vs full fine-tuning,exp2_frozen,total_parameters,4015234.0,count
+2,frozen transfer vs full fine-tuning,exp2_frozen,trainable_parameters,7686.0,count
+2,frozen transfer vs full fine-tuning,exp2_frozen,train_wall_time,32.71116805076599,seconds
+2,frozen transfer vs full fine-tuning,exp2_frozen,seconds_per_epoch,3.2711168050765993,seconds
+2,frozen transfer vs full fine-tuning,exp2_finetune,best_val_accuracy,1.0,fraction
+2,frozen transfer vs full fine-tuning,exp2_finetune,best_val_loss,0.5908191018634372,cross-entropy
+2,frozen transfer vs full fine-tuning,exp2_finetune,final_train_accuracy,1.0,fraction
+2,frozen transfer vs full fine-tuning,exp2_finetune,final_train_loss,0.008464086981904175,cross-entropy
+2,frozen transfer vs full fine-tuning,exp2_finetune,generalization_gap,0.0,fraction
+2,frozen transfer vs full fine-tuning,exp2_finetune,selected_epoch,1.0,epoch
+2,frozen transfer vs full fine-tuning,exp2_finetune,total_parameters,4015234.0,count
+2,frozen transfer vs full fine-tuning,exp2_finetune,trainable_parameters,4015234.0,count
+2,frozen transfer vs full fine-tuning,exp2_finetune,train_wall_time,79.03833842277527,seconds
+2,frozen transfer vs full fine-tuning,exp2_finetune,seconds_per_epoch,7.9038338422775265,seconds
+3,training augmentation strength,exp3_none,best_val_accuracy,1.0,fraction
+3,training augmentation strength,exp3_none,best_val_loss,0.16327754590246413,cross-entropy
+3,training augmentation strength,exp3_none,final_train_accuracy,0.9986111111111111,fraction
+3,training augmentation strength,exp3_none,final_train_loss,0.03759736650519901,cross-entropy
+3,training augmentation strength,exp3_none,generalization_gap,-0.001388888888888884,fraction
+3,training augmentation strength,exp3_none,selected_epoch,2.0,epoch
+3,training augmentation strength,exp3_none,total_parameters,4015234.0,count
+3,training augmentation strength,exp3_none,trainable_parameters,7686.0,count
+3,training augmentation strength,exp3_none,train_wall_time,30.532208681106567,seconds
+3,training augmentation strength,exp3_none,seconds_per_epoch,3.0532208681106567,seconds
+3,training augmentation strength,exp3_moderate,best_val_accuracy,1.0,fraction
+3,training augmentation strength,exp3_moderate,best_val_loss,0.1968768967522515,cross-entropy
+3,training augmentation strength,exp3_moderate,final_train_accuracy,0.9972222222222222,fraction
+3,training augmentation strength,exp3_moderate,final_train_loss,0.0369164463546541,cross-entropy
+3,training augmentation strength,exp3_moderate,generalization_gap,-0.002777777777777768,fraction
+3,training augmentation strength,exp3_moderate,selected_epoch,2.0,epoch
+3,training augmentation strength,exp3_moderate,total_parameters,4015234.0,count
+3,training augmentation strength,exp3_moderate,trainable_parameters,7686.0,count
+3,training augmentation strength,exp3_moderate,train_wall_time,30.479717016220093,seconds
+3,training augmentation strength,exp3_moderate,seconds_per_epoch,3.0479717016220094,seconds
+3,training augmentation strength,exp3_strong,best_val_accuracy,1.0,fraction
+3,training augmentation strength,exp3_strong,best_val_loss,0.32035169932577345,cross-entropy
+3,training augmentation strength,exp3_strong,final_train_accuracy,0.9791666666666666,fraction
+3,training augmentation strength,exp3_strong,final_train_loss,0.1110545011030303,cross-entropy
+3,training augmentation strength,exp3_strong,generalization_gap,-0.02083333333333337,fraction
+3,training augmentation strength,exp3_strong,selected_epoch,5.0,epoch
+3,training augmentation strength,exp3_strong,total_parameters,4015234.0,count
+3,training augmentation strength,exp3_strong,trainable_parameters,7686.0,count
+3,training augmentation strength,exp3_strong,train_wall_time,32.520561933517456,seconds
+3,training augmentation strength,exp3_strong,seconds_per_epoch,3.252056193351746,seconds
+4,optimizer comparison,exp4_sgd,best_val_accuracy,1.0,fraction
+4,optimizer comparison,exp4_sgd,best_val_loss,0.03821200844314363,cross-entropy
+4,optimizer comparison,exp4_sgd,final_train_accuracy,0.9986111111111111,fraction
+4,optimizer comparison,exp4_sgd,final_train_loss,0.02275355988078647,cross-entropy
+4,optimizer comparison,exp4_sgd,generalization_gap,-0.001388888888888884,fraction
+4,optimizer comparison,exp4_sgd,selected_epoch,2.0,epoch
+4,optimizer comparison,exp4_sgd,total_parameters,4015234.0,count
+4,optimizer comparison,exp4_sgd,trainable_parameters,7686.0,count
+4,optimizer comparison,exp4_sgd,train_wall_time,30.258766174316406,seconds
+4,optimizer comparison,exp4_sgd,seconds_per_epoch,3.0258766174316407,seconds
+4,optimizer comparison,exp4_sgd,learning_rate,0.01,lr
+4,optimizer comparison,exp4_adam,best_val_accuracy,1.0,fraction
+4,optimizer comparison,exp4_adam,best_val_loss,0.16327754590246413,cross-entropy
+4,optimizer comparison,exp4_adam,final_train_accuracy,0.9986111111111111,fraction
+4,optimizer comparison,exp4_adam,final_train_loss,0.03759736650519901,cross-entropy
+4,optimizer comparison,exp4_adam,generalization_gap,-0.001388888888888884,fraction
+4,optimizer comparison,exp4_adam,selected_epoch,2.0,epoch
+4,optimizer comparison,exp4_adam,total_parameters,4015234.0,count
+4,optimizer comparison,exp4_adam,trainable_parameters,7686.0,count
+4,optimizer comparison,exp4_adam,train_wall_time,30.92672371864319,seconds
+4,optimizer comparison,exp4_adam,seconds_per_epoch,3.0926723718643188,seconds
+4,optimizer comparison,exp4_adam,learning_rate,0.001,lr
+5,validation-selected final model,final,best_val_accuracy,1.0,fraction
+5,validation-selected final model,final,best_val_loss,0.03821200844314363,cross-entropy
+5,validation-selected final model,final,final_train_accuracy,0.9986111111111111,fraction
+5,validation-selected final model,final,final_train_loss,0.02275355988078647,cross-entropy
+5,validation-selected final model,final,generalization_gap,-0.001388888888888884,fraction
+5,validation-selected final model,final,selected_epoch,2.0,epoch
+5,validation-selected final model,final,total_parameters,4015234.0,count
+5,validation-selected final model,final,trainable_parameters,7686.0,count
+5,validation-selected final model,final,train_wall_time,30.205735683441162,seconds
+5,validation-selected final model,final,seconds_per_epoch,3.0205735683441164,seconds
+5,validation-selected final model,final,inference_latency,2.2558119577777487,ms/image
+6,held-out test evaluation,final,test_accuracy,1.0,fraction
+6,held-out test evaluation,final,test_loss,0.03215006875495116,cross-entropy
+6,held-out test evaluation,final,test_macro_f1,1.0,fraction
+6,held-out test evaluation,checker,test_precision,1.0,fraction
+6,held-out test evaluation,checker,test_recall,1.0,fraction
+6,held-out test evaluation,checker,test_f1,1.0,fraction
+6,held-out test evaluation,checker,test_per_class_accuracy,1.0,fraction
+6,held-out test evaluation,circles,test_precision,1.0,fraction
+6,held-out test evaluation,circles,test_recall,1.0,fraction
+6,held-out test evaluation,circles,test_f1,1.0,fraction
+6,held-out test evaluation,circles,test_per_class_accuracy,1.0,fraction
+6,held-out test evaluation,diagonal,test_precision,1.0,fraction
+6,held-out test evaluation,diagonal,test_recall,1.0,fraction
+6,held-out test evaluation,diagonal,test_f1,1.0,fraction
+6,held-out test evaluation,diagonal,test_per_class_accuracy,1.0,fraction
+6,held-out test evaluation,dots,test_precision,1.0,fraction
+6,held-out test evaluation,dots,test_recall,1.0,fraction
+6,held-out test evaluation,dots,test_f1,1.0,fraction
+6,held-out test evaluation,dots,test_per_class_accuracy,1.0,fraction
+6,held-out test evaluation,horizontal,test_precision,1.0,fraction
+6,held-out test evaluation,horizontal,test_recall,1.0,fraction
+6,held-out test evaluation,horizontal,test_f1,1.0,fraction
+6,held-out test evaluation,horizontal,test_per_class_accuracy,1.0,fraction
+6,held-out test evaluation,vertical,test_precision,1.0,fraction
+6,held-out test evaluation,vertical,test_recall,1.0,fraction
+6,held-out test evaluation,vertical,test_f1,1.0,fraction
+6,held-out test evaluation,vertical,test_per_class_accuracy,1.0,fraction
+5,penultimate embeddings,test split,embedding_dimension,1280.0,features
+5,penultimate embeddings,test split,pca_variance_first_two,0.12224803864955902,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0,test_accuracy,1.0,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0,test_loss,0.03215006875495116,cross-entropy
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0,test_macro_f1,1.0,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0,mean_confidence,0.9701632857322693,probability
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.02,test_accuracy,1.0,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.02,test_loss,0.05940890974468655,cross-entropy
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.02,test_macro_f1,1.0,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.02,mean_confidence,0.945204496383667,probability
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.05,test_accuracy,0.9833333333333333,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.05,test_loss,0.2740033116605547,cross-entropy
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.05,test_macro_f1,0.9832312934946809,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.05,mean_confidence,0.78904128074646,probability
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.1,test_accuracy,0.6111111111111112,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.1,test_loss,1.1326088905334473,cross-entropy
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.1,test_macro_f1,0.589349965909807,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.1,mean_confidence,0.4741963744163513,probability
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.2,test_accuracy,0.10555555555555556,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.2,test_loss,1.9242061350080701,cross-entropy
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.2,test_macro_f1,0.09054123054269453,fraction
+7,robustness to Gaussian pixel noise,gaussian_noise_sigma=0.2,mean_confidence,0.262715220451355,probability
+7,robustness to Gaussian pixel noise,original vs sigma=0.20,accuracy_drop,0.8944444444444445,fraction
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,best_val_accuracy,0.7763801537386443,fraction
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,best_val_loss,0.6277668801826835,cross-entropy
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,final_train_accuracy,0.7859639312176709,fraction
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,final_train_loss,0.6073928771403292,cross-entropy
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,generalization_gap,0.009583777479026612,fraction
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,selected_epoch,3.0,epoch
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,total_parameters,4016515.0,count
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,trainable_parameters,4016515.0,count
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,train_wall_time,229.8687343597412,seconds
+8,real-world transfer: class imbalance (Skin Cancer),exp8_skin_cancer,seconds_per_epoch,76.62291145324707,seconds
+8,real-world transfer: class imbalance (Skin Cancer),test split,test_accuracy,0.7952480782669462,fraction
+8,real-world transfer: class imbalance (Skin Cancer),test split,test_macro_f1,0.4791711960761571,fraction
+8,real-world transfer: class imbalance (Skin Cancer),test split,test_loss,0.6077062410128692,cross-entropy
+8,real-world transfer: class imbalance (Skin Cancer),train split,class_imbalance_ratio,59.135802469135804,ratio
+8,real-world transfer: class imbalance (Skin Cancer),train split,majority_class_share,0.6696490982804417,fraction
+8,real-world transfer: class imbalance (Skin Cancer),actinic_keratoses,train_images,233.0,count
+8,real-world transfer: class imbalance (Skin Cancer),actinic_keratoses,test_f1,0.4594594594594595,fraction
+8,real-world transfer: class imbalance (Skin Cancer),actinic_keratoses,test_per_class_accuracy,0.3617021276595745,fraction
+8,real-world transfer: class imbalance (Skin Cancer),basal_cell_carcinoma,train_images,368.0,count
+8,real-world transfer: class imbalance (Skin Cancer),basal_cell_carcinoma,test_f1,0.5529411764705883,fraction
+8,real-world transfer: class imbalance (Skin Cancer),basal_cell_carcinoma,test_per_class_accuracy,0.6438356164383562,fraction
+8,real-world transfer: class imbalance (Skin Cancer),benign_keratosis-like_lesions,train_images,785.0,count
+8,real-world transfer: class imbalance (Skin Cancer),benign_keratosis-like_lesions,test_f1,0.5618729096989966,fraction
+8,real-world transfer: class imbalance (Skin Cancer),benign_keratosis-like_lesions,test_per_class_accuracy,0.535031847133758,fraction
+8,real-world transfer: class imbalance (Skin Cancer),dermatofibroma,train_images,81.0,count
+8,real-world transfer: class imbalance (Skin Cancer),dermatofibroma,test_f1,0.0,fraction
+8,real-world transfer: class imbalance (Skin Cancer),dermatofibroma,test_per_class_accuracy,0.0,fraction
+8,real-world transfer: class imbalance (Skin Cancer),melanocytic_Nevi,train_images,4790.0,count
+8,real-world transfer: class imbalance (Skin Cancer),melanocytic_Nevi,test_f1,0.9159248269040554,fraction
+8,real-world transfer: class imbalance (Skin Cancer),melanocytic_Nevi,test_per_class_accuracy,0.96760710553814,fraction
+8,real-world transfer: class imbalance (Skin Cancer),melanoma,train_images,795.0,count
+8,real-world transfer: class imbalance (Skin Cancer),melanoma,test_f1,0.464,fraction
+8,real-world transfer: class imbalance (Skin Cancer),melanoma,test_per_class_accuracy,0.36477987421383645,fraction
+8,real-world transfer: class imbalance (Skin Cancer),vascular_lesions,train_images,101.0,count
+8,real-world transfer: class imbalance (Skin Cancer),vascular_lesions,test_f1,0.4,fraction
+8,real-world transfer: class imbalance (Skin Cancer),vascular_lesions,test_per_class_accuracy,0.2857142857142857,fraction
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,best_val_accuracy,0.9635185185185186,fraction
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,best_val_loss,0.10688444749900589,cross-entropy
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,final_train_accuracy,0.9551851851851851,fraction
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,final_train_loss,0.1474485259457135,cross-entropy
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,generalization_gap,-0.008333333333333415,fraction
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,selected_epoch,3.0,epoch
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,total_parameters,4020358.0,count
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,trainable_parameters,4020358.0,count
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,train_wall_time,504.53017497062683,seconds
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat,seconds_per_epoch,168.17672499020895,seconds
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,best_val_accuracy,0.9201851851851852,fraction
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,best_val_loss,0.23367855584179914,cross-entropy
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,final_train_accuracy,0.8912345679012346,fraction
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,final_train_loss,0.33172718574971327,cross-entropy
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,generalization_gap,-0.028950617283950653,fraction
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,selected_epoch,3.0,epoch
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,total_parameters,4020358.0,count
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,trainable_parameters,12810.0,count
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,train_wall_time,180.21482801437378,seconds
+9,real-world transfer: domain shift (EuroSAT),exp9_eurosat_frozen,seconds_per_epoch,60.071609338124595,seconds
+9,real-world transfer: domain shift (EuroSAT),finetune,test_accuracy,0.9674074074074074,fraction
+9,real-world transfer: domain shift (EuroSAT),finetune,test_macro_f1,0.9672822019563743,fraction
+9,real-world transfer: domain shift (EuroSAT),finetune,test_loss,0.1010697170816086,cross-entropy
+9,real-world transfer: domain shift (EuroSAT),frozen,test_accuracy,0.9224074074074075,fraction
+9,real-world transfer: domain shift (EuroSAT),frozen,test_macro_f1,0.9201781431630695,fraction
+9,real-world transfer: domain shift (EuroSAT),frozen,test_loss,0.23041842487123276,cross-entropy
+9,real-world transfer: domain shift (EuroSAT),finetune vs frozen,adaptation_gain,0.04499999999999993,fraction
+9,real-world transfer: domain shift (EuroSAT),AnnualCrop,test_per_class_accuracy,0.9664429530201343,fraction
+9,real-world transfer: domain shift (EuroSAT),AnnualCrop,test_f1,0.9520661157024793,fraction
+9,real-world transfer: domain shift (EuroSAT),Forest,test_per_class_accuracy,0.9588815789473685,fraction
+9,real-world transfer: domain shift (EuroSAT),Forest,test_f1,0.9773679798826487,fraction
+9,real-world transfer: domain shift (EuroSAT),HerbaceousVegetation,test_per_class_accuracy,0.9773123909249564,fraction
+9,real-world transfer: domain shift (EuroSAT),HerbaceousVegetation,test_f1,0.9427609427609427,fraction
+9,real-world transfer: domain shift (EuroSAT),Highway,test_per_class_accuracy,0.9798387096774194,fraction
+9,real-world transfer: domain shift (EuroSAT),Highway,test_f1,0.9768844221105528,fraction
+9,real-world transfer: domain shift (EuroSAT),Industrial,test_per_class_accuracy,0.9780439121756487,fraction
+9,real-world transfer: domain shift (EuroSAT),Industrial,test_f1,0.9869083585095669,fraction
+9,real-world transfer: domain shift (EuroSAT),Pasture,test_per_class_accuracy,0.9318181818181818,fraction
+9,real-world transfer: domain shift (EuroSAT),Pasture,test_f1,0.9534883720930233,fraction
+9,real-world transfer: domain shift (EuroSAT),PermanentCrop,test_per_class_accuracy,0.9107806691449815,fraction
+9,real-world transfer: domain shift (EuroSAT),PermanentCrop,test_f1,0.9404990403071017,fraction
+9,real-world transfer: domain shift (EuroSAT),Residential,test_per_class_accuracy,0.9963898916967509,fraction
+9,real-world transfer: domain shift (EuroSAT),Residential,test_f1,0.9928057553956834,fraction
+9,real-world transfer: domain shift (EuroSAT),River,test_per_class_accuracy,0.9716446124763705,fraction
+9,real-world transfer: domain shift (EuroSAT),River,test_f1,0.9734848484848484,fraction
+9,real-world transfer: domain shift (EuroSAT),SeaLake,test_per_class_accuracy,0.9917898193760263,fraction
+9,real-world transfer: domain shift (EuroSAT),SeaLake,test_f1,0.9765561843168956,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/before_mitigation,final_train_accuracy,0.9222222222222223,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/before_mitigation,final_val_accuracy,0.8555555555555555,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/before_mitigation,best_val_accuracy,0.9833333333333333,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/before_mitigation,final_train_val_gap,0.06666666666666676,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/before_mitigation,test_accuracy,0.9888888888888889,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/before_mitigation,test_macro_f1,0.9889739383998543,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/after_mitigation,final_train_accuracy,0.7472222222222222,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/after_mitigation,final_val_accuracy,0.9944444444444445,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/after_mitigation,best_val_accuracy,1.0,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/after_mitigation,final_train_val_gap,-0.24722222222222223,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/after_mitigation,test_accuracy,1.0,fraction
+task6,failure analysis,failure_A_label_noise_overfitting/after_mitigation,test_macro_f1,1.0,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/before_mitigation,final_train_accuracy,0.9013888888888889,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/before_mitigation,final_val_accuracy,0.8111111111111111,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/before_mitigation,best_val_accuracy,0.9111111111111111,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/before_mitigation,final_train_val_gap,0.09027777777777779,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/before_mitigation,test_accuracy,0.9388888888888889,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/before_mitigation,test_macro_f1,0.9388719088635732,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/after_mitigation,final_train_accuracy,1.0,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/after_mitigation,final_val_accuracy,1.0,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/after_mitigation,best_val_accuracy,1.0,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/after_mitigation,final_train_val_gap,0.0,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/after_mitigation,test_accuracy,1.0,fraction
+task6,failure analysis,failure_B_augmentation_mismatch/after_mitigation,test_macro_f1,1.0,fraction
+task6,failure analysis,failure_A_label_noise_overfitting,corrupted_label_fraction,0.24583333333333332,fraction
+task6,failure analysis,failure_A_label_noise_overfitting,memorization_free_train_ceiling,0.7541666666666667,fraction
+task6,failure analysis,failure_A_label_noise_overfitting,gap_reduction,0.313888888888889,fraction
+task6,failure analysis,failure_A_label_noise_overfitting,clean_test_accuracy_gain,0.011111111111111072,fraction
+task6,failure analysis,failure_B_augmentation_mismatch,oriented_class_accuracy_gain,0.18333333333333335,fraction
+task6,failure analysis,failure_B_augmentation_mismatch,horizontal_vertical_confusions_before,11.0,count
+task6,failure analysis,failure_B_augmentation_mismatch,horizontal_vertical_confusions_after,0.0,count
+task7,extension: label smoothing,baseline_ce,best_val_accuracy,1.0,fraction
+task7,extension: label smoothing,baseline_ce,test_accuracy,1.0,fraction
+task7,extension: label smoothing,baseline_ce,test_macro_f1,1.0,fraction
+task7,extension: label smoothing,baseline_ce,mean_confidence,0.9701632857322693,fraction
+task7,extension: label smoothing,baseline_ce,overconfidence_gap,-0.029836714267730713,fraction
+task7,extension: label smoothing,label_smoothing_0.1,best_val_accuracy,1.0,fraction
+task7,extension: label smoothing,label_smoothing_0.1,test_accuracy,1.0,fraction
+task7,extension: label smoothing,label_smoothing_0.1,test_macro_f1,1.0,fraction
+task7,extension: label smoothing,label_smoothing_0.1,mean_confidence,0.9338725805282593,fraction
+task7,extension: label smoothing,label_smoothing_0.1,overconfidence_gap,-0.06612741947174072,fraction
+task7,extension: label smoothing,smoothed minus baseline,test_accuracy_delta,0.0,fraction
+task7,extension: label smoothing,smoothed minus baseline,overconfidence_gap_delta,-0.03629070520401001,fraction
