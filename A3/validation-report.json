@@ -12,7 +12,7 @@
   "valid": true,
   "summary": {
     "errors": 0,
-    "warnings": 7
+    "warnings": 6
   },
   "findings": [
     {
@@ -50,12 +50,6 @@
       "code": "large-file-warning",
       "message": "Review this file because it exceeds 10 MB.",
       "path": "outputs/models/trained_model.pt"
-    },
-    {
-      "level": "warning",
-      "code": "placeholder-text",
-      "message": "Review unresolved placeholder text before submission.",
-      "path": "A3.ipynb"
     }
   ]
 }

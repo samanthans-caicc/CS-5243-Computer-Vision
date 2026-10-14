@@ -7808,7 +7808,7 @@ a.anchor-link {
 <li>First name: <strong>Samantha</strong></li>
 <li>Last name: <strong>Salas</strong></li>
 <li>ABC123: <strong>xso947</strong></li>
-<li>External resources and generative-AI assistance: <strong>Claude Code (implementation of <code>src/student_code.py</code>, experiment harness, and figure code; debugging assistance), the official PyTorch / torchvision / scikit-learn / Matplotlib documentation linked in <code>README.md</code>, and the Hugging Face <code>datasets</code> documentation for <code>load_dataset</code>.</strong></li>
+<li>External resources and generative-AI assistance: <strong>Claude Code, ChatGPT</strong></li>
 </ul>
 <p>This is an individual assignment. Do not install unapproved packages or use external libraries or pretrained pipelines to bypass a required implementation.</p>
 <p>Generative AI tools may be used for conceptual clarification, debugging assistance, code suggestions, and help interpreting documentation. Students must disclose meaningful use in every assignment. You remain responsible for understanding, testing, and explaining all submitted work. AI may not replace your own experimental analysis, failure analysis, reflection, or interpretation of observed results. You may be asked to explain selected work; inability to do so may reduce credit or lead to an academic-integrity review.</p>
@@ -8320,6 +8320,7 @@ plot_confusion_matrix -&gt; ('Figure', 'Axes') | nothing written to disk by the 
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <p><strong>Pipeline analysis:</strong> In a few sentences, identify the controls that make model comparisons interpretable and explain how test-set isolation is maintained.</p>
+<p>Model comparisons are made interpretable through the deterministic data pipeline in <strong>Task 1</strong>, primarily. Task 1 fixes train/validation/test splits, train-only augmentations, uses deterministic validations/tests transforms, applies ImageNet normalization, and controls training shuffling with a fixed seed. Meanwhile, Task 2 fixes local ImageNet pretrained weights, Task 3 defines a consistent frozen-backbone training/evaluation setup, and Task 4 standardizes the classification metrics used for comparison. Therefore, test-set isolation is maintained by “locking away” the held-out test set so that it is not used during training or model-selection decisions. Instead, it is consulted only after the final model configuration has been chosen.</p>
 </div>
 </div>
 </div>
@@ -9779,7 +9780,7 @@ saved eurosat_transfer_results.png
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>Synthesis:</strong> YOUR RESPONSE.</p>
+<p><strong>Synthesis:</strong> The pretrained EfficientNet-B0 worked very well without needing to retrain the entire model given the frozen model reached 100% validation accuracy even with far fewer trainable parameters. The test accuracy went from 92.24% to 96.74% proving that while pretrained features work well enough, adjusting the full model can help when there is new, different data. One drawback was that many configurations throughout the experiments reached the best validation accuracy of 100%. This made it a challenge to compare.</p>
 </div>
 </div>
 </div>
@@ -10055,7 +10056,7 @@ saved failure_analysis.png
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>Failure analysis:</strong> In a few sentences, YOUR RESPONSE.</p>
+<p><strong>Failure analysis:</strong> I will put this bluntly: bad labels and incorrect augmentation can greatly cause training data to corrupt. From my results, when training labels became corrupted (24.6%), the fully fine-tuned model began memorizing those incorrect labels which hurt the validation performance (85.56%). Once mitigation was implemented, the tests were clean and the validation accuracy improved to 99.44%, and a clean test accuracy of 100%. The augmentation error was much more simple. The 90-degree rotation caused a problem because rotating horizontal patterns to vertical patterns, while keeping the original labels, caused confusion between the two classes which reduced its test accuracy. When the label-preserving augmentation is used, the confusion is removed and is restored back to 100% accuracy.</p>
 </div>
 </div>
 </div>
@@ -10218,7 +10219,7 @@ cumulative metrics: 281 records -&gt; experiment_metrics.csv
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>Extension question and conclusion:</strong> In a few sentences, YOUR RESPONSE.</p>
+<p><strong>Extension question and conclusion:</strong> The question I asked myself was: “does label smoothing improve accuracy?” First, there is one important detail: both models got 100% test accuracy. So, this does not prove that label smoothing improves test accuracies. Rather, it changes the confidence; it dropped from 97.02% to 93.39%. Therefore, label smoothing more-so changes the confidence calibration rather than benefiting overall classification performance.</p>
 </div>
 </div>
 </div>
@@ -10240,7 +10241,7 @@ cumulative metrics: 281 records -&gt; experiment_metrics.csv
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<p><strong>Reflection:</strong> YOUR RESPONSE.</p>
+<p><strong>Reflection:</strong> From what I’ve learned about fine-tuning even before entering Computer Vision, having a fixed random seed can be beneficial to repeat experiments consistently. It is a reproduction decision and practice I will carry forward in the name of research. There is just one downside to this: overall accuracy performances; overall accuracy can be misleading on imbalanced datasets. A major example is the accuracy differences on the skin-cancer experiment where the overall test accuracy was 79.52%, whereas the macro F1 accuracy was only 47.62%. Overall test accuracies get common class samples, whereas macro F1 gets rarer class samples, which is why marco F1’s score was lower. In addition to keeping a fixed random seed, I also intend to practice seeing accuracy scores on a deeper level by using techniques such as Macro F1.</p>
 </div>
 </div>
 </div>
